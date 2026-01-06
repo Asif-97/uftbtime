@@ -3,351 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Controller Dashboard | UFTB Exam Controller</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Exam Controller Dashboard | UFTB Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary-color: #003366;
-            --secondary-color: #f39c12;
-            --sidebar-width: 250px;
-            --bg-color: #f4f6f9;
-            --text-color: #333;
+            --primary: #003366;       /* UFTB Blue */
+            --primary-dark: #002244;
+            --accent: #f39c12;        /* Gold/Orange */
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --light-bg: #f3f4f6;
+            --white: #ffffff;
+            --text-dark: #2c3e50;
+            --text-gray: #7f8c8d;
+            --sidebar-width: 260px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--light-bg);
             display: flex;
             height: 100vh;
-            color: var(--text-color);
+            color: var(--text-dark);
+            overflow: hidden;
         }
 
-        /* Sidebar Styling */
+        /* --- SIDEBAR DESIGN --- */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--primary-color);
-            color: white;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 100;
         }
 
-        .sidebar h3 {
+        .sidebar-header {
             text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
         }
+
+        .sidebar-header h3 { font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
+        .sidebar-header p { font-size: 0.8rem; opacity: 0.7; }
 
         .menu-item {
-            padding: 12px 15px;
-            color: #b8c7ce;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            transition: 0.3s;
-            display: block;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
         .menu-item:hover, .menu-item.active {
-            background-color: rgba(255,255,255,0.1);
-            color: white;
-            border-left: 4px solid var(--secondary-color);
+            background-color: rgba(255,255,255,0.15);
+            color: var(--white);
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
+        .menu-item i { width: 20px; text-align: center; }
         .mt-auto { margin-top: auto; }
 
-        /* Main Content Styling */
+        /* --- MAIN CONTENT --- */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
-        /* Header Styling */
+        /* Header */
         header {
-            background: white;
-            height: 70px;
+            background: var(--white);
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            z-index: 10;
+            padding: 0 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
-        .university-branding {
+        .brand-area { display: flex; align-items: center; gap: 15px; }
+        .brand-area img { height: 50px; }
+        .brand-area h2 { font-size: 1.2rem; color: var(--primary); font-weight: 600; }
+
+        .header-actions { display: flex; align-items: center; gap: 20px; }
+        .date-display { font-size: 0.9rem; color: var(--text-gray); font-weight: 500; }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #eee;
+            color: #666;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
         }
+        .status-dot { height: 8px; width: 8px; border-radius: 50%; background-color: #bbb; }
 
-        .university-branding img { height: 50px; }
-        .university-branding h2 { font-size: 1.2rem; color: var(--primary-color); font-weight: 600; }
-
-        /* NOTICE BOARD */
+        /* Notice Board */
         .notice-board {
-            background-color: #fff3cd;
+            background: #fff8e1;
             color: #856404;
             padding: 10px 20px;
             display: flex;
             align-items: center;
             border-bottom: 1px solid #ffeeba;
         }
-        .notice-label {
-            font-weight: bold;
-            background: #e74c3c;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 3px;
-            margin-right: 15px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
-        marquee { font-size: 0.95rem; font-weight: 500; }
+        .notice-tag { background: var(--accent); color: white; padding: 2px 10px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; margin-right: 15px; }
 
         /* Dashboard Body */
-        .dashboard-body {
-            padding: 30px;
-            overflow-y: auto;
-            height: 100%;
+        .dashboard-body { padding: 30px 40px; max-width: 1600px; margin: 0 auto; width: 100%; }
+
+        /* STATS CARDS (New Feature) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .card-container {
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+
+        .stat-icon {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+        .bg-blue { background: #e3f2fd; color: #1976d2; }
+        .bg-green { background: #e8f5e9; color: #388e3c; }
+        .bg-purple { background: #f3e5f5; color: #7b1fa2; }
+        .bg-orange { background: #fff3e0; color: #f57c00; }
+
+        .stat-info h5 { font-size: 0.9rem; color: var(--text-gray); font-weight: 500; }
+        .stat-info h3 { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-top: 5px; }
+
+        /* MAIN EXAM AREA */
+        .exam-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 20px;
+            gap: 30px;
         }
 
         .card {
-            background: white;
-            border-radius: 8px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             position: relative;
         }
 
-        /* Full Screen Button */
+        /* Fullscreen Button */
         .fullscreen-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.3s;
+            position: absolute; top: 20px; right: 20px;
+            background: transparent; border: none; color: var(--text-gray);
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
         }
-        .fullscreen-btn:hover { color: var(--primary-color); transform: scale(1.1); }
+        .fullscreen-btn:hover { color: var(--primary); transform: scale(1.1); }
 
-        /* EXAM DETAILS INPUTS */
-        .exam-inputs {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        
-        .input-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
+        /* Inputs */
+        .input-row { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 8px; font-weight: 500; }
         .input-group input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .input-group input:focus { outline: none; border-color: var(--secondary-color); }
-        .input-group input:disabled { background-color: #e9ecef; cursor: not-allowed; }
-
-        /* Timer Styles */
-        .timer-display {
-            font-size: 6rem; /* Increased size */
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-align: center;
-            margin: 20px 0;
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 30px 20px;
-        }
-
-        .alert-mode {
-            color: #e67e22 !important; 
-            animation: pulse 1s infinite;
-            border-color: #e67e22;
-        }
-
-        .critical-mode {
-            color: #e74c3c !important; 
-            animation: blinkFast 0.5s infinite;
-            border-color: #e74c3c;
-            background-color: #fadbd8;
-        }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-        @keyframes blinkFast { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        .controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-
-        button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
+            width: 100%; padding: 12px 15px;
+            border: 2px solid #eee; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; color: var(--primary);
             transition: 0.3s;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
         }
+        .input-group input:focus { outline: none; border-color: var(--primary); background: #f0f7ff; }
+        .input-group input:disabled { background: #f8f9fa; color: #aaa; cursor: not-allowed; border-color: #eee; }
 
-        .btn-mid { background-color: #3498db; color: white; }
-        .btn-mid:hover { background-color: #2980b9; }
-
-        .btn-final { background-color: #9b59b6; color: white; }
-        .btn-final:hover { background-color: #8e44ad; }
-        
-        .btn-custom { background-color: #2ecc71; color: white; } /* NEW Button Style */
-        .btn-custom:hover { background-color: #27ae60; }
-
-        .btn-reset { background-color: #e74c3c; color: white; }
-        .btn-reset:hover { background-color: #c0392b; }
-
-        .status-badge {
-            display: inline-block;
-            padding: 5px 10px;
+        /* Timer Display */
+        .timer-wrapper {
+            background: #fafafa;
             border-radius: 15px;
-            font-size: 0.8rem;
-            background: #eee;
-            color: #666;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px dashed #e0e0e0;
         }
-        
-        .info-list li { margin-bottom: 10px; list-style: none; position: relative; padding-left: 20px; color: #555; font-size: 0.9rem;}
-        .info-list li::before { content: '•'; color: var(--primary-color); font-weight: bold; position: absolute; left: 0; }
-
-        .mute-control {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            color: #666;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
+        .timer-display {
+            font-size: 6.5rem;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
         }
 
-        /* Full Screen Specific Adjustments */
-        body.fullscreen-mode .sidebar, 
-        body.fullscreen-mode header { display: none; }
+        /* Controls */
+        .control-panel { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         
-        body.fullscreen-mode .main-content { height: 100vh; background: white; }
-        body.fullscreen-mode .dashboard-body { padding: 0; display: flex; align-items: center; justify-content: center; }
-        body.fullscreen-mode .card-container { display: flex; width: 90%; max-width: 1000px; }
-        body.fullscreen-mode .card:last-child { display: none; } /* Hide info card in fullscreen */
-        body.fullscreen-mode .card:first-child { width: 100%; border: none; box-shadow: none; }
-        body.fullscreen-mode .timer-display { font-size: 12rem; border: none; margin: 0; }
-        body.fullscreen-mode .fullscreen-btn { top: 30px; right: 30px; font-size: 2rem; }
+        .btn {
+            padding: 12px 25px;
+            border: none; border-radius: 8px;
+            font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .btn-mid { background: #3498db; color: white; }
+        .btn-final { background: #9b59b6; color: white; }
+        .btn-custom { background: var(--success); color: white; }
+        .btn-reset { background: var(--danger); color: white; }
+
+        /* Instructions List */
+        .instruction-list li {
+            list-style: none; margin-bottom: 15px; font-size: 0.95rem;
+            display: flex; align-items: start; gap: 10px; color: #555;
+        }
+        .instruction-list li i { color: var(--primary); margin-top: 4px; }
+
+        /* Animations */
+        .alert-mode { color: var(--accent) !important; animation: pulse 1s infinite; }
+        .critical-mode { color: var(--danger) !important; animation: blink 0.5s infinite; }
+        @keyframes pulse { 50% { opacity: 0.6; } }
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+        /* Full Screen Logic */
+        body.fullscreen-mode .sidebar, body.fullscreen-mode header, body.fullscreen-mode .stats-grid, body.fullscreen-mode .notice-board { display: none; }
+        body.fullscreen-mode .main-content { height: 100vh; justify-content: center; align-items: center; background: white; }
+        body.fullscreen-mode .dashboard-body { padding: 0; display: flex; justify-content: center; }
+        body.fullscreen-mode .card-container { width: 90%; max-width: 1200px; }
+        body.fullscreen-mode .exam-grid { display: flex; width: 100%; justify-content: center; }
+        body.fullscreen-mode .card:last-child { display: none; } /* Hide info card */
+        body.fullscreen-mode .card:first-child { width: 100%; border: none; box-shadow: none; padding: 0; }
+        body.fullscreen-mode .timer-wrapper { border: none; background: transparent; padding: 0; margin: 50px 0; }
+        body.fullscreen-mode .timer-display { font-size: 15rem; }
+        body.fullscreen-mode .fullscreen-btn { top: 40px; right: 40px; font-size: 2.5rem; }
+
     </style>
 </head>
 <body>
 
-  <aside class="sidebar">
-    <h3>UFTB HUB</h3>
-    <a href="index.html" class="menu-item active">Exam Dashboard</a>
-    <a href="schedule.html" class="menu-item">Schedule</a>
-    <a href="invigilators.html" class="menu-item">Invigilators</a>
-    <a href="settings.html" class="menu-item">Settings</a>
-    
-    <a href="https://uftb.ac.bd/" target="_blank" class="menu-item mt-auto">Go to UFTB Website</a>
-</aside>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>UFTB</h3>
+            <p>Exam Controller Panel</p>
+        </div>
+        
+        <nav>
+            <a href="index.html" class="menu-item active">
+                <i class="fas fa-clock"></i> Dashboard
+            </a>
+            <a href="schedule.html" class="menu-item">
+                <i class="fas fa-calendar-alt"></i> Schedule
+            </a>
+            <a href="invigilators.html" class="menu-item">
+                <i class="fas fa-users"></i> Invigilators
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </nav>
 
-    <div class="main-content" id="mainArea">
+        <a href="https://uftb.ac.bd/" target="_blank" class="menu-item mt-auto">
+            <i class="fas fa-globe"></i> Visit Website
+        </a>
+    </aside>
+
+    <div class="main-content">
         <header>
-            <div class="university-branding">
+            <div class="brand-area">
                 <img src="https://uftb.ac.bd/uploads/settings/17663114198452.png" alt="UFTB Logo">
-                <h2>University of Frontier Technology, Bangladesh</h2>
+                <h2>University of Frontier Technology</h2>
             </div>
-            <div>
-                <span class="status-badge" id="exam-status">No Exam Active</span>
+            <div class="header-actions">
+                <span class="date-display" id="current-date">Loading Date...</span>
+                <div class="status-badge" id="exam-status">
+                    <div class="status-dot"></div> <span>No Exam</span>
+                </div>
             </div>
         </header>
 
         <div class="notice-board">
-            <span class="notice-label">NOTICE BOARD</span>
-            <marquee behavior="scroll" direction="left">
-                Keep your ID card on the desk. No mobile phones or smartwatches allowed inside the exam hall. Do not talk to other students. Stop writing immediately when the time is up.
-            </marquee>
+            <span class="notice-tag">LIVE NOTICE</span>
+            <marquee>Keep ID cards visible. No electronic devices allowed. Warning bell will ring 5 minutes before time ends.</marquee>
         </div>
 
         <div class="dashboard-body">
-            <div class="card-container">
-                <div class="card">
-                    <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Toggle Full Screen">
-                        <i class="fas fa-expand"></i>
-                    </button>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-info"><h5>Term</h5><h3>Fall-26</h3></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green"><i class="fas fa-user-check"></i></div>
+                    <div class="stat-info"><h5>Registered</h5><h3>1,250</h3></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-purple"><i class="fas fa-door-open"></i></div>
+                    <div class="stat-info"><h5>Rooms Active</h5><h3>12</h3></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-orange"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info"><h5>Reports</h5><h3>0</h3></div>
+                </div>
+            </div>
 
-                    <div class="exam-inputs">
+            <div class="exam-grid">
+                <div class="card">
+                    <button class="fullscreen-btn" onclick="toggleFullScreen()"><i class="fas fa-expand"></i></button>
+
+                    <div class="input-row">
                         <div class="input-group">
                             <label>Course Code</label>
-                            <input type="text" id="courseCode" placeholder="e.g. CSE-401" oninput="saveInputs()">
+                            <input type="text" id="courseCode" placeholder="CSE-101" oninput="saveInputs()">
                         </div>
                         <div class="input-group">
                             <label>Course Title</label>
-                            <input type="text" id="courseTitle" placeholder="e.g. Artificial Intelligence" oninput="saveInputs()">
+                            <input type="text" id="courseTitle" placeholder="Computer Fundamentals" oninput="saveInputs()">
                         </div>
                     </div>
 
-                    <div class="timer-display" id="display">00:00:00</div>
-
-                    <div class="controls">
-                        <button class="btn-mid" onclick="startExam('mid')">Mid-Term (2H)</button>
-                        <button class="btn-final" onclick="startExam('final')">Final (3H)</button>
-                        <button class="btn-custom" onclick="startCustomExam()">Custom Time</button>
-                        <button class="btn-reset" onclick="resetTimer()">Reset</button>
+                    <div class="timer-wrapper">
+                        <div class="timer-display" id="display">00:00:00</div>
                     </div>
-                    
-                    <div class="mute-control">
+
+                    <div class="control-panel">
+                        <button class="btn btn-mid" onclick="startExam('mid')"><i class="fas fa-hourglass-half"></i> Mid (2H)</button>
+                        <button class="btn btn-final" onclick="startExam('final')"><i class="fas fa-hourglass-end"></i> Final (3H)</button>
+                        <button class="btn btn-custom" onclick="startCustomExam()"><i class="fas fa-stopwatch"></i> Custom</button>
+                        <button class="btn btn-reset" onclick="resetTimer()"><i class="fas fa-redo"></i> Reset</button>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 15px;">
                         <input type="checkbox" id="voiceEnabled" checked> 
-                        <label for="voiceEnabled">Enable Voice Alerts</label>
+                        <label for="voiceEnabled" style="font-size: 0.9rem; color: #666;"> Enable Voice Assistant</label>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h4 style="margin-bottom: 15px; color: var(--primary-color);">Exam Instructions</h4>
-                    <ul class="info-list">
-                        <li><strong>Mid-Term:</strong> 2 Hours.</li>
-                        <li><strong>Final Exam:</strong> 3 Hours.</li>
-                        <li><strong>Custom:</strong> Set any duration for Quizzes/Labs.</li>
-                        <li><strong>Alerts:</strong> Half-time (Orange) & Last 5 min (Red).</li>
+                    <h4 style="margin-bottom: 20px; color: var(--primary);">Exam Protocol</h4>
+                    <ul class="instruction-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>Mid-Term:</strong> 2 Hours (Alert @ 1hr)</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Final Exam:</strong> 3 Hours (Alert @ 1.5hr)</li>
+                        <li><i class="fas fa-bell"></i> <strong>Warnings:</strong> Voice alert at Half-time & Last 5 min.</li>
+                        <li><i class="fas fa-shield-alt"></i> <strong>Safe Mode:</strong> Timer is protected against refresh.</li>
                     </ul>
-                    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-                    <div style="text-align: center;">
-                        <p style="font-size: 0.8rem; color: #888;">System Date:</p>
-                        <p id="current-date" style="font-weight: bold; color: var(--primary-color);">Loading...</p>
+                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                    <div style="text-align: center; color: #888; font-size: 0.85rem;">
+                        <p>System v2.0 | Developed for UFTB</p>
                     </div>
                 </div>
             </div>
@@ -360,36 +387,27 @@
         let fiveMinTriggered = false;
         let voices = [];
 
-        // Setup Date
         const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', dateOptions);
 
-        // Load Voices
-        window.speechSynthesis.onvoiceschanged = function() {
-            voices = window.speechSynthesis.getVoices();
-        };
+        window.speechSynthesis.onvoiceschanged = () => voices = window.speechSynthesis.getVoices();
 
         window.onload = function() {
-            window.speechSynthesis.getVoices(); // Init voices
-
-            // Restore Inputs
+            window.speechSynthesis.getVoices();
             if(localStorage.getItem('courseCode')) document.getElementById('courseCode').value = localStorage.getItem('courseCode');
             if(localStorage.getItem('courseTitle')) document.getElementById('courseTitle').value = localStorage.getItem('courseTitle');
 
-            // Restore Timer
             const savedTargetTime = localStorage.getItem('targetTime');
             const savedExamType = localStorage.getItem('examType');
-            const savedDuration = localStorage.getItem('customDuration'); // New for custom
+            const savedDuration = localStorage.getItem('customDuration');
 
             if (savedTargetTime && savedExamType) {
                 const now = new Date().getTime();
                 if (savedTargetTime > now) {
                     lockInputs();
-                    // Need to pass duration to calculate half-time correctly
                     let duration = savedDuration ? parseInt(savedDuration) : 0;
-                    if(savedExamType === 'mid') duration = 2 * 60 * 60;
-                    if(savedExamType === 'final') duration = 3 * 60 * 60;
-                    
+                    if(savedExamType === 'mid') duration = 7200;
+                    if(savedExamType === 'final') duration = 10800;
                     runTimer(savedExamType, parseInt(savedTargetTime), duration);
                 } else {
                     localStorage.clear();
@@ -407,201 +425,127 @@
             document.getElementById('courseTitle').disabled = true;
         }
 
-        // --- NEW: Custom Exam Logic ---
         function startCustomExam() {
-            let minutes = prompt("Enter exam duration in minutes (e.g., 45):");
-            if (minutes == null || minutes == "") return;
-            if (isNaN(minutes) || minutes <= 0) {
-                alert("Please enter a valid number of minutes.");
-                return;
-            }
-            
-            // Convert to integer
-            let durationSeconds = parseInt(minutes) * 60;
-            startExam('custom', durationSeconds);
+            let minutes = prompt("Enter exam duration in minutes:");
+            if (!minutes || isNaN(minutes) || minutes <= 0) return alert("Invalid duration!");
+            startExam('custom', parseInt(minutes) * 60);
         }
 
         function startExam(type, customSeconds = 0) {
             const code = document.getElementById('courseCode').value;
             const title = document.getElementById('courseTitle').value;
-            
-            if(code === "" || title === "") {
-                if(!confirm("Course details are empty. Start anyway?")) return;
-            }
+            if((code === "" || title === "") && !confirm("Start without details?")) return;
 
-            let durationSeconds = 0;
-            if (type === 'mid') durationSeconds = 2 * 60 * 60;
-            else if (type === 'final') durationSeconds = 3 * 60 * 60;
-            else if (type === 'custom') durationSeconds = customSeconds;
+            let durationSeconds = (type === 'mid') ? 7200 : (type === 'final') ? 10800 : customSeconds;
+            // durationSeconds = 15; // UNCOMMENT TO TEST
 
-            // TEST: Uncomment to test logic quickly
-            // durationSeconds = 20; 
-
-            const now = new Date().getTime();
-            const targetTime = now + (durationSeconds * 1000);
+            const targetTime = new Date().getTime() + (durationSeconds * 1000);
 
             localStorage.setItem('targetTime', targetTime);
             localStorage.setItem('examType', type);
             if(type === 'custom') localStorage.setItem('customDuration', durationSeconds);
-            
             localStorage.setItem('halfTimeTriggered', 'false');
             localStorage.setItem('fiveMinTriggered', 'false');
             
             saveInputs();
             lockInputs();
-
             runTimer(type, targetTime, durationSeconds);
         }
 
-        function runTimer(type, targetTime, totalDurationSeconds) {
+        function runTimer(type, targetTime, totalDuration) {
             clearInterval(countdown);
             document.getElementById('display').classList.remove('alert-mode', 'critical-mode');
             
             halfTimeTriggered = localStorage.getItem('halfTimeTriggered') === 'true';
             fiveMinTriggered = localStorage.getItem('fiveMinTriggered') === 'true';
 
-            let durationName = "";
-            if(type === 'mid') durationName = "Mid-Term Exam";
-            else if(type === 'final') durationName = "Final Exam";
-            else durationName = "Exam"; // For custom
-
-            // Dynamic Alert Logic
-            let halfTimeSeconds = totalDurationSeconds / 2;
-            let fiveMinSeconds = 5 * 60;
-
-            // TEST:
-            // halfTimeSeconds = 10;
-            // fiveMinSeconds = 5;
-
-            updateBadge(type, durationName);
+            let name = (type === 'mid') ? "Mid-Term" : (type === 'final') ? "Final Exam" : "Exam";
+            updateBadge(true, name);
 
             countdown = setInterval(() => {
                 const now = new Date().getTime();
-                const distance = targetTime - now;
-                const secondsLeft = Math.floor(distance / 1000);
+                const secondsLeft = Math.floor((targetTime - now) / 1000);
 
-                if (distance < 0) {
+                if (secondsLeft < 0) {
                     clearInterval(countdown);
                     document.getElementById('display').innerText = "00:00:00";
                     finishExam(); 
                     return;
                 }
 
-                // 1. HALF TIME ALERT (Only if total duration > 10 mins to avoid spam in short tests)
-                if (!halfTimeTriggered && totalDurationSeconds > 600 && secondsLeft <= halfTimeSeconds && secondsLeft > fiveMinSeconds) {
-                    triggerHalfTimeWarning();
-                    halfTimeTriggered = true;
-                    localStorage.setItem('halfTimeTriggered', 'true');
+                // Alerts
+                if (!halfTimeTriggered && totalDuration > 600 && secondsLeft <= (totalDuration / 2) && secondsLeft > 300) {
+                    triggerHalfTime();
                 }
-
-                // 2. LAST 5 MIN ALERT
-                if (!fiveMinTriggered && secondsLeft <= fiveMinSeconds) {
-                    triggerFiveMinWarning();
-                    fiveMinTriggered = true;
-                    localStorage.setItem('fiveMinTriggered', 'true');
+                if (!fiveMinTriggered && secondsLeft <= 300) {
+                    triggerFiveMin();
                 }
 
                 updateDisplay(secondsLeft);
             }, 1000);
         }
 
-        function updateDisplay(secondsLeft) {
-            const hours = Math.floor(secondsLeft / 3600);
-            const minutes = Math.floor((secondsLeft % 3600) / 60);
-            const seconds = secondsLeft % 60;
-            document.getElementById('display').innerText = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        function updateDisplay(s) {
+            const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+            document.getElementById('display').innerText = `${pad(h)}:${pad(m)}:${pad(sec)}`;
         }
 
-        // --- ALERTS ---
-        function triggerHalfTimeWarning() {
-            document.getElementById('display').classList.add('alert-mode'); 
-            speakText("Attention please. Half of the exam duration is over.");
+        function triggerHalfTime() {
+            document.getElementById('display').classList.add('alert-mode');
+            speakText("Attention please. Half time is passed.");
+            halfTimeTriggered = true; localStorage.setItem('halfTimeTriggered', 'true');
         }
 
-        function triggerFiveMinWarning() {
-            document.getElementById('display').classList.remove('alert-mode'); 
+        function triggerFiveMin() {
+            document.getElementById('display').classList.remove('alert-mode');
             document.getElementById('display').classList.add('critical-mode');
-            speakText("Attention students. Last five minutes remaining. Please check your identification number properly.");
+            speakText("Attention. Last 5 minutes remaining.");
+            fiveMinTriggered = true; localStorage.setItem('fiveMinTriggered', 'true');
         }
 
         function finishExam() {
             document.getElementById('display').classList.remove('critical-mode');
-            const badge = document.getElementById('exam-status');
-            badge.innerText = "Exam Finished";
-            badge.style.background = "#e74c3c";
-            
-            const finalMessage = "Time is up. Please stop writing immediately and submit your answer scripts.";
-
+            updateBadge(false, "Finished");
             if(document.getElementById('voiceEnabled').checked) {
-                speakText(finalMessage);
-                setTimeout(() => speakText(finalMessage), 5000);
-                setTimeout(() => speakText(finalMessage), 10000);
+                let msg = "Time is up. Please stop writing.";
+                speakText(msg); setTimeout(() => speakText(msg), 4000);
             }
-
-            localStorage.clear(); 
+            localStorage.clear();
         }
 
-        // --- NEW: FULL SCREEN LOGIC ---
+        function speakText(text) {
+            if(!document.getElementById('voiceEnabled').checked) return;
+            const u = new SpeechSynthesisUtterance(text);
+            u.voice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Female")) || null;
+            u.rate = 0.85; window.speechSynthesis.speak(u);
+        }
+
+        function updateBadge(active, text) {
+            const b = document.getElementById('exam-status');
+            const d = b.querySelector('.status-dot');
+            b.querySelector('span').innerText = text;
+            d.style.backgroundColor = active ? "#2ecc71" : "#bbb";
+            b.style.color = active ? "#000" : "#666";
+        }
+
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
                 document.body.classList.add('fullscreen-mode');
-                document.querySelector('.fullscreen-btn i').classList.remove('fa-expand');
-                document.querySelector('.fullscreen-btn i').classList.add('fa-compress');
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    document.body.classList.remove('fullscreen-mode');
-                    document.querySelector('.fullscreen-btn i').classList.add('fa-expand');
-                    document.querySelector('.fullscreen-btn i').classList.remove('fa-compress');
-                }
+                if(document.exitFullscreen) document.exitFullscreen();
+                document.body.classList.remove('fullscreen-mode');
             }
         }
-
-        // Listen for Escape key to exit fullscreen style properly
-        document.addEventListener('fullscreenchange', (event) => {
-            if (!document.fullscreenElement) {
-                document.body.classList.remove('fullscreen-mode');
-                document.querySelector('.fullscreen-btn i').classList.add('fa-expand');
-            }
+        document.addEventListener('fullscreenchange', () => {
+            if(!document.fullscreenElement) document.body.classList.remove('fullscreen-mode');
         });
 
-        // --- HELPERS ---
-        function speakText(text) {
-            if(!document.getElementById('voiceEnabled').checked) return;
-
-            const utterance = new SpeechSynthesisUtterance(text);
-            voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(voice => 
-                voice.name.includes("Google US English") || 
-                voice.name.includes("Zira") || 
-                voice.name.includes("Female")
-            );
-
-            if (preferredVoice) utterance.voice = preferredVoice;
-            utterance.rate = 0.85; 
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function updateBadge(type, name) {
-            const badge = document.getElementById('exam-status');
-            badge.innerText = `${name} Running`;
-            
-            if (type === 'mid') badge.style.background = "#3498db";
-            else if (type === 'final') badge.style.background = "#9b59b6";
-            else badge.style.background = "#2ecc71"; // Green for Custom
-
-            badge.style.color = "white";
-        }
-
         function resetTimer() {
-            if(!confirm("Are you sure you want to reset the exam timer?")) return;
-            clearInterval(countdown);
-            localStorage.clear(); 
-            location.reload(); 
+            if(confirm("Reset Timer?")) { clearInterval(countdown); localStorage.clear(); location.reload(); }
         }
 
-        function pad(val) { return val < 10 ? '0' + val : val; }
+        function pad(v) { return v < 10 ? '0' + v : v; }
     </script>
 </body>
 </html>
