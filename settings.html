@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | UFTB Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #003366; --secondary-color: #f39c12; --bg-color: #f4f6f9; --text-color: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); display: flex; height: 100vh; color: var(--text-color); }
+        
+        .sidebar { width: 250px; background-color: var(--primary-color); color: white; display: flex; flex-direction: column; padding: 20px; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .menu-item { padding: 12px 15px; color: #b8c7ce; text-decoration: none; border-radius: 4px; margin-bottom: 5px; display: block; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--secondary-color); }
+        .mt-auto { margin-top: auto; }
+
+        .main-content { flex: 1; padding: 40px; }
+        .setting-group { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        h2 { margin-bottom: 20px; color: var(--primary-color); }
+        label { font-weight: 600; display: block; margin-bottom: 10px; }
+        select, input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 300px; }
+        button { background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h3>UFTB HUB</h3>
+        <a href="index.html" class="menu-item">Exam Dashboard</a>
+        <a href="schedule.html" class="menu-item">Schedule</a>
+        <a href="invigilators.html" class="menu-item">Invigilators</a>
+        <a href="settings.html" class="menu-item active">Settings</a>
+        <a href="https://uftb.ac.bd/" target="_blank" class="menu-item mt-auto">Go to UFTB Website</a>
+    </aside>
+
+    <div class="main-content">
+        <h2>System Configuration</h2>
+        
+        <div class="setting-group">
+            <label>Default Warning Voice</label>
+            <select>
+                <option>Google US English (Female)</option>
+                <option>Microsoft Zira</option>
+                <option>System Default</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <label>Exam Controller Name</label>
+            <input type="text" placeholder="Enter name" value="Dr. M. A. Kashem">
+        </div>
+
+        <button onclick="alert('Settings Saved!')">Save Changes</button>
+    </div>
+</body>
+</html>

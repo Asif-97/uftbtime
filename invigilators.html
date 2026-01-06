@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invigilators | UFTB Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #003366; --secondary-color: #f39c12; --bg-color: #f4f6f9; --text-color: #333; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); display: flex; height: 100vh; color: var(--text-color); }
+        
+        .sidebar { width: 250px; background-color: var(--primary-color); color: white; display: flex; flex-direction: column; padding: 20px; }
+        .sidebar h3 { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .menu-item { padding: 12px 15px; color: #b8c7ce; text-decoration: none; border-radius: 4px; margin-bottom: 5px; display: block; }
+        .menu-item:hover, .menu-item.active { background-color: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--secondary-color); }
+        .mt-auto { margin-top: auto; }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        
+        .card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-top: 4px solid var(--primary-color); }
+        .card h4 { color: var(--primary-color); margin-bottom: 5px; }
+        .designation { font-size: 0.85rem; color: #777; margin-bottom: 15px; display: block; }
+        .room-badge { background: #eee; padding: 5px 10px; border-radius: 4px; font-weight: bold; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h3>UFTB HUB</h3>
+        <a href="index.html" class="menu-item">Exam Dashboard</a>
+        <a href="schedule.html" class="menu-item">Schedule</a>
+        <a href="invigilators.html" class="menu-item active">Invigilators</a>
+        <a href="settings.html" class="menu-item">Settings</a>
+        <a href="https://uftb.ac.bd/" target="_blank" class="menu-item mt-auto">Go to UFTB Website</a>
+    </aside>
+
+    <div class="main-content">
+        <h2>Duty Roster (Today)</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h4>Dr. Rahman</h4>
+                <span class="designation">Professor, CSE</span>
+                <div class="room-badge">Room: 302</div>
+            </div>
+            <div class="card">
+                <h4>Ms. Farhana</h4>
+                <span class="designation">Lecturer, EEE</span>
+                <div class="room-badge">Room: 405</div>
+            </div>
+            <div class="card">
+                <h4>Mr. Kabir</h4>
+                <span class="designation">Assistant Prof, BBA</span>
+                <div class="room-badge">Room: Lab-2</div>
+            </div>
+             <div class="card">
+                <h4>Mr. Tanvir</h4>
+                <span class="designation">Lecturer, CSE</span>
+                <div class="room-badge">Room: 302</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
