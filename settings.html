@@ -2,56 +2,241 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings | UFTB Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Admin Panel | UFTB Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <style>
-        :root { --primary-color: #003366; --secondary-color: #f39c12; --bg-color: #f4f6f9; --text-color: #333; }
+        :root { --primary: #003366; --primary-dark: #002244; --accent: #f39c12; --light: #f4f7f6; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); display: flex; height: 100vh; color: var(--text-color); }
-        
-        .sidebar { width: 250px; background-color: var(--primary-color); color: white; display: flex; flex-direction: column; padding: 20px; }
-        .sidebar h3 { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .menu-item { padding: 12px 15px; color: #b8c7ce; text-decoration: none; border-radius: 4px; margin-bottom: 5px; display: block; }
-        .menu-item:hover, .menu-item.active { background-color: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--secondary-color); }
+        body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; }
+
+        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px; display: flex; flex-direction: column; height: 100vh; position: fixed; z-index: 1; }
+        .sidebar-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
         .mt-auto { margin-top: auto; }
 
-        .main-content { flex: 1; padding: 40px; }
-        .setting-group { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        h2 { margin-bottom: 20px; color: var(--primary-color); }
-        label { font-weight: 600; display: block; margin-bottom: 10px; }
-        select, input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 300px; }
-        button { background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; width: calc(100% - 260px); }
+
+        /* LOCK SCREEN */
+        #lockScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; transition: 0.5s; }
+        .pin-box { background: white; padding: 40px; border-radius: 20px; text-align: center; width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .pin-input { font-size: 2rem; width: 100%; text-align: center; letter-spacing: 10px; border: 2px solid #eee; border-radius: 10px; margin: 20px 0; padding: 10px; outline: none; color: var(--primary); }
+        .pin-input:focus { border-color: var(--accent); }
+        .unlock-btn { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        .unlock-btn:hover { background: var(--accent); }
+
+        /* ADMIN CONTENT */
+        .admin-body { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header-title h2 { color: var(--primary); font-size: 2rem; font-weight: 700; }
+        .header-title p { color: #7f8c8d; }
+
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
+        .upload-card { background: white; padding: 40px; border-radius: 20px; text-align: center; border: 2px dashed #ccc; cursor: pointer; transition: 0.3s; }
+        .upload-card:hover { border-color: var(--accent); background: #fffcf0; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .icon-box { width: 70px; height: 70px; background: #eef2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--primary); font-size: 2rem; }
+        
+        .status-msg { margin-top: 20px; padding: 15px; border-radius: 10px; background: #d4edda; color: #155724; text-align: center; display: none; }
+        .sending-msg { background: #fff3cd; color: #856404; display: none; margin-top: 10px; padding: 10px; border-radius: 10px; text-align: center; }
+
+        .danger-zone { margin-top: 60px; padding-top: 30px; border-top: 2px solid #eee; }
+        .reset-btn { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 12px 25px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: 600; transition: 0.3s; }
+        .reset-btn:hover { background: #c62828; color: white; }
     </style>
 </head>
 <body>
+
     <aside class="sidebar">
-        <h3>UFTB HUB</h3>
-        <a href="index.html" class="menu-item">Exam Dashboard</a>
-        <a href="schedule.html" class="menu-item">Schedule</a>
-        <a href="invigilators.html" class="menu-item">Invigilators</a>
-        <a href="settings.html" class="menu-item active">Settings</a>
-        <a href="https://uftb.ac.bd/" target="_blank" class="menu-item mt-auto">Go to UFTB Website</a>
+        <div class="sidebar-header">
+            <h3>UFTB HUB</h3>
+            <p style="font-size: 0.8rem; opacity: 0.7;">Exam Control System</p>
+        </div>
+        <nav>
+            <a href="index.html" class="menu-item"><i class="fas fa-clock"></i> Dashboard</a>
+            <a href="schedule.html" class="menu-item"><i class="fas fa-calendar-alt"></i> Exam Schedule</a>
+            <a href="invigilators.html" class="menu-item"><i class="fas fa-users"></i> Invigilators</a>
+            <a href="settings.html" class="menu-item active"><i class="fas fa-user-shield"></i> Admin Panel</a>
+        </nav>
     </aside>
 
     <div class="main-content">
-        <h2>System Configuration</h2>
-        
-        <div class="setting-group">
-            <label>Default Warning Voice</label>
-            <select>
-                <option>Google US English (Female)</option>
-                <option>Microsoft Zira</option>
-                <option>System Default</option>
-            </select>
+        <div id="lockScreen">
+            <div class="pin-box">
+                <i class="fas fa-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 10px;"></i>
+                <h3 style="color: var(--primary);">Admin Access</h3>
+                <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••">
+                <button class="unlock-btn" onclick="checkPin()">Unlock Dashboard</button>
+                <p id="errorMsg" style="color: red; font-size: 0.8rem; margin-top: 10px; display: none;">Incorrect PIN</p>
+            </div>
         </div>
 
-        <div class="setting-group">
-            <label>Exam Controller Name</label>
-            <input type="text" placeholder="Enter name" value="Dr. M. A. Kashem">
-        </div>
+        <div class="admin-body" id="adminPanel">
+            <div class="header-title">
+                <h2>Control Center</h2>
+                <p>Upload data and manage system configurations.</p>
+            </div>
 
-        <button onclick="alert('Settings Saved!')">Save Changes</button>
+            <div class="upload-grid">
+                <div class="upload-card" onclick="document.getElementById('scheduleCsv').click()">
+                    <div class="icon-box"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Upload Exam Routine</h3>
+                    <p style="color: #777; font-size: 0.9rem;">Update schedule for students</p>
+                    <input type="file" id="scheduleCsv" style="display: none;" accept=".csv">
+                </div>
+
+                <div class="upload-card" onclick="document.getElementById('dutyCsv').click()">
+                    <div class="icon-box"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>Upload Teacher Duties</h3>
+                    <p style="color: #777; font-size: 0.9rem;">Auto-generates list & sends emails</p>
+                    <input type="file" id="dutyCsv" style="display: none;" accept=".csv">
+                </div>
+            </div>
+
+            <div id="sendingMsg" class="sending-msg"><i class="fas fa-spinner fa-spin"></i> Sending emails to teachers... Please wait.</div>
+            <div id="statusMsg" class="status-msg"></div>
+
+            <div class="danger-zone">
+                <h4 style="color: #c62828; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle"></i> System Reset</h4>
+                <button class="reset-btn" onclick="factoryReset()"><i class="fas fa-trash-alt"></i> Factory Reset All Data</button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // ---------------------------------------------------------
+        // TODO: REPLACE THESE WITH YOUR EMAILJS KEYS
+        const SERVICE_ID = "service_o2bifs8";   // Example: service_xyz
+        const TEMPLATE_ID = "template_tcqot09"; // Example: template_abc
+        const PUBLIC_KEY = "FJuG0-WoDmy3DtVDL";   // Example: user_123xyz
+        // ---------------------------------------------------------
+
+        const CORRECT_PIN = "1234"; 
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(PUBLIC_KEY);
+        })();
+
+        function checkPin() {
+            if(document.getElementById('pinInput').value === CORRECT_PIN) {
+                document.getElementById('lockScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lockScreen').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                }, 500);
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        // UPLOAD LOGIC
+        document.getElementById('scheduleCsv').addEventListener('change', (e) => handleUpload(e, 'scheduleData'));
+        document.getElementById('dutyCsv').addEventListener('change', (e) => handleUpload(e, 'dutiesData', true));
+
+        function handleUpload(e, key, isDuty = false) {
+            const file = e.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const csv = evt.target.result;
+                const rows = csv.split('\n').slice(1); // Skip header
+                
+                let data = isDuty ? {} : [];
+                
+                rows.forEach(row => {
+                    const cols = row.split(',');
+                    // CSV Format: Name, Email, Date, Room, Time
+                    if(cols.length >= 4) {
+                        if(isDuty) {
+                            // Assuming format: Name, Email, Date, Room, Time
+                            // If user uploads old format (4 cols), it handles it gracefully
+                            const name = cols[0].trim();
+                            const email = cols[1].includes('@') ? cols[1].trim() : ''; // Basic check
+                            const date = cols[1].includes('@') ? cols[2].trim() : cols[1].trim();
+                            const room = cols[1].includes('@') ? cols[3].trim() : cols[2].trim();
+                            const time = cols[1].includes('@') ? cols[4].trim() : cols[3].trim();
+
+                            if(name) {
+                                if(!data[name]) data[name] = { email: email, duties: [] };
+                                data[name].duties.push({ date, room, time });
+                            }
+                        } else {
+                            data.push({ date: cols[0].trim(), time: cols[1].trim(), course: cols[2].trim(), room: cols[3].trim() });
+                        }
+                    }
+                });
+
+                if(isDuty) {
+                    // Save cleaned data structure for Invigilator page
+                    let storageData = {};
+                    for (const [name, info] of Object.entries(data)) {
+                        storageData[name] = info.duties;
+                    }
+                    localStorage.setItem(key, JSON.stringify(storageData));
+                    
+                    // Trigger Email Sending
+                    if(confirm("Duties Updated! Do you want to send email notifications to teachers now?")) {
+                        sendEmails(data);
+                    } else {
+                        showStatus(`✅ Successfully Updated Teacher Duties (Emails Skipped)`);
+                    }
+
+                } else {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    showStatus(`✅ Successfully Updated Exam Schedule`);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function sendEmails(teachersData) {
+            const sendingEl = document.getElementById('sendingMsg');
+            sendingEl.style.display = 'block';
+            let count = 0;
+
+            for (const [name, info] of Object.entries(teachersData)) {
+                if(info.email) {
+                    let dutyDetails = info.duties.map(d => `Date: ${d.date} | Time: ${d.time} | Room: ${d.room}`).join('\n');
+                    
+                    let params = {
+                        to_name: name,
+                        to_email: info.email,
+                        message: dutyDetails
+                    };
+
+                    emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
+                        .then(() => {
+                            console.log(`Email sent to ${name}`);
+                        });
+                    count++;
+                }
+            }
+
+            // Simulating completion delay
+            setTimeout(() => {
+                sendingEl.style.display = 'none';
+                showStatus(`✅ Processed! Emails sent to ${count} teachers.`);
+            }, 2000);
+        }
+
+        function showStatus(msg) {
+            const el = document.getElementById('statusMsg');
+            el.innerText = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 4000);
+        }
+
+        function factoryReset() {
+            if(confirm("Are you sure? This will delete all data permanently!")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>
