@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel | UFTB Hub</title>
+    <title>Admin Panel | UFTB </title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -106,19 +106,37 @@
         </div>
     </div>
 
-    <script>
-        // ---------------------------------------------------------
-        // TODO: REPLACE THESE WITH YOUR EMAILJS KEYS
-        const SERVICE_ID = "service_o2bifs8";   // Example: service_xyz
-        const TEMPLATE_ID = "template_tcqot09"; // Example: template_abc
-        const PUBLIC_KEY = "FJuG0-WoDmy3DtVDL";   // Example: user_123xyz
-        // ---------------------------------------------------------
+  <script>
+        // ================= CONFIGURATION =================
+        
+        // 1. FIREBASE CONFIG (আপনার দেওয়া তথ্য অনুযায়ী আপডেট করা হয়েছে)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI8WXJNIG4_R44idWxuA3np3PwePNxqX0",
+            authDomain: "uftbtime.firebaseapp.com",
+            databaseURL: "https://uftbtime-default-rtdb.firebaseio.com",
+            projectId: "uftbtime",
+            storageBucket: "uftbtime.firebasestorage.app",
+            messagingSenderId: "260572635171",
+            appId: "1:260572635171:web:efaaadc69069d80297d196",
+            measurementId: "G-989NJ37C0F"
+        };
+
+        // 2. EMAILJS KEYS (আপনার আগের সেটআপ অনুযায়ী)
+        const SERVICE_ID = "service_o2bifs8";      // আপনার Service ID
+        const TEMPLATE_ID = "template_tcqot09";    // আপনার Template ID
+        const PUBLIC_KEY = "FJuG0-WoDmy3DtVDL";    // আপনার Public Key
+        
+        // =================================================
 
         const CORRECT_PIN = "1234"; 
 
-        // Initialize EmailJS
+        // Initialize Firebase & EmailJS
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
         (function() {
             emailjs.init(PUBLIC_KEY);
+            updateStorageStatus(); // Check Cloud Storage on load
         })();
 
         function checkPin() {
@@ -133,94 +151,126 @@
             }
         }
 
-        // UPLOAD LOGIC
-        document.getElementById('scheduleCsv').addEventListener('change', (e) => handleUpload(e, 'scheduleData'));
-        document.getElementById('dutyCsv').addEventListener('change', (e) => handleUpload(e, 'dutiesData', true));
+        // --- CLOUD STORAGE CHECKER ---
+        function updateStorageStatus() {
+            // Check Routine from Firebase
+            database.ref('schedule').once('value').then((snapshot) => {
+                const data = snapshot.val();
+                const count = data ? data.length : 0;
+                const card = document.getElementById('scheduleStatus');
+                document.getElementById('scheduleCount').innerText = count > 0 ? `${count} Exams Online` : "No Cloud Data";
+                if(count > 0) card.classList.add('status-active');
+            });
 
-        function handleUpload(e, key, isDuty = false) {
+            // Check Duties from Firebase
+            database.ref('duties').once('value').then((snapshot) => {
+                const data = snapshot.val();
+                const count = data ? data.length : 0; // Assuming array structure
+                const card = document.getElementById('dutyStatus');
+                document.getElementById('dutyCount').innerText = count > 0 ? `${count} Teachers Online` : "No Cloud Data";
+                if(count > 0) card.classList.add('status-active');
+            });
+        }
+
+        // UPLOAD HANDLERS
+        document.getElementById('scheduleCsv').addEventListener('change', (e) => processCSV(e, 'schedule'));
+        document.getElementById('dutyCsv').addEventListener('change', (e) => processCSV(e, 'duty'));
+
+        let currentData = [];
+        let currentType = "";
+
+        function processCSV(e, type) {
             const file = e.target.files[0];
             if(!file) return;
             
+            currentType = type;
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const csv = evt.target.result;
-                const rows = csv.split('\n').slice(1); // Skip header
-                
-                let data = isDuty ? {} : [];
-                
-                rows.forEach(row => {
-                    const cols = row.split(',');
-                    // CSV Format: Name, Email, Date, Room, Time
-                    if(cols.length >= 4) {
-                        if(isDuty) {
-                            // Assuming format: Name, Email, Date, Room, Time
-                            // If user uploads old format (4 cols), it handles it gracefully
-                            const name = cols[0].trim();
-                            const email = cols[1].includes('@') ? cols[1].trim() : ''; // Basic check
-                            const date = cols[1].includes('@') ? cols[2].trim() : cols[1].trim();
-                            const room = cols[1].includes('@') ? cols[3].trim() : cols[2].trim();
-                            const time = cols[1].includes('@') ? cols[4].trim() : cols[3].trim();
+                const rows = evt.target.result.split('\n').map(r => r.trim()).filter(r => r);
+                // Simple parsing logic...
+                currentData = [];
+                for(let i=1; i<rows.length; i++) {
+                    const cols = rows[i].split(',');
+                    if(cols.length < 4) continue;
 
-                            if(name) {
-                                if(!data[name]) data[name] = { email: email, duties: [] };
-                                data[name].duties.push({ date, room, time });
-                            }
-                        } else {
-                            data.push({ date: cols[0].trim(), time: cols[1].trim(), course: cols[2].trim(), room: cols[3].trim() });
-                        }
-                    }
-                });
-
-                if(isDuty) {
-                    // Save cleaned data structure for Invigilator page
-                    let storageData = {};
-                    for (const [name, info] of Object.entries(data)) {
-                        storageData[name] = info.duties;
-                    }
-                    localStorage.setItem(key, JSON.stringify(storageData));
-                    
-                    // Trigger Email Sending
-                    if(confirm("Duties Updated! Do you want to send email notifications to teachers now?")) {
-                        sendEmails(data);
+                    let obj = {};
+                    if(type === 'duty') {
+                        // Name, Email, Date, Room, Time
+                        obj = {
+                            name: cols[0].trim(),
+                            email: cols[1].trim(),
+                            date: cols[2].trim(),
+                            room: cols[3].trim(),
+                            time: cols[4].trim()
+                        };
                     } else {
-                        showStatus(`✅ Successfully Updated Teacher Duties (Emails Skipped)`);
+                        // Date, Time, Course, Room
+                        obj = {
+                            date: cols[0].trim(),
+                            time: cols[1].trim(),
+                            course: cols[2].trim(),
+                            room: cols[3].trim()
+                        };
                     }
-
-                } else {
-                    localStorage.setItem(key, JSON.stringify(data));
-                    showStatus(`✅ Successfully Updated Exam Schedule`);
+                    currentData.push(obj);
+                }
+                
+                // Show Preview (Simplified for this snippet)
+                if(confirm(`Loaded ${currentData.length} records. Upload to Cloud Database now?`)) {
+                    saveToCloud();
                 }
             };
             reader.readAsText(file);
+            e.target.value = ''; 
         }
 
-        function sendEmails(teachersData) {
+        // --- SAVE TO FIREBASE ---
+        function saveToCloud() {
+            const path = currentType === 'duty' ? 'duties' : 'schedule';
+            
+            database.ref(path).set(currentData, (error) => {
+                if (error) {
+                    showStatus("❌ Error saving to Cloud!");
+                    console.error(error);
+                } else {
+                    showStatus("✅ Data Live on Cloud!");
+                    updateStorageStatus();
+                    
+                    // If duties uploaded, ask for email
+                    if(currentType === 'duty') {
+                        if(confirm("Data is Live! Do you want to send emails to teachers now?")) {
+                            sendBatchEmails();
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- EMAIL SENDING ---
+        function sendBatchEmails() {
             const sendingEl = document.getElementById('sendingMsg');
             sendingEl.style.display = 'block';
             let count = 0;
 
-            for (const [name, info] of Object.entries(teachersData)) {
-                if(info.email) {
-                    let dutyDetails = info.duties.map(d => `Date: ${d.date} | Time: ${d.time} | Room: ${d.room}`).join('\n');
-                    
-                    let params = {
-                        to_name: name,
-                        to_email: info.email,
-                        message: dutyDetails
+            currentData.forEach((row, idx) => {
+                if(row.email && row.email.includes('@')) {
+                    const params = {
+                        to_name: row.name,
+                        to_email: row.email,
+                        message: `Date: ${row.date}\nTime: ${row.time}\nRoom: ${row.room}`
                     };
 
-                    emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
-                        .then(() => {
-                            console.log(`Email sent to ${name}`);
-                        });
+                    setTimeout(() => {
+                        emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
+                            .then(() => console.log(`Email sent to ${row.name}`));
+                    }, idx * 600); // 600ms delay to avoid rate limit
                     count++;
                 }
-            }
+            });
 
-            // Simulating completion delay
             setTimeout(() => {
                 sendingEl.style.display = 'none';
-                showStatus(`✅ Processed! Emails sent to ${count} teachers.`);
+                showStatus(`✅ Processed! Emails sending to ${count} teachers.`);
             }, 2000);
         }
 
@@ -232,9 +282,13 @@
         }
 
         function factoryReset() {
-            if(confirm("Are you sure? This will delete all data permanently!")) {
-                localStorage.clear();
-                location.reload();
+            if(confirm("WARNING: This will delete ALL cloud data. Are you sure?")) {
+                database.ref('/').remove()
+                    .then(() => {
+                        showStatus("♻️ System Factory Reset Complete");
+                        updateStorageStatus();
+                    })
+                    .catch((error) => showStatus("Error resetting: " + error.message));
             }
         }
     </script>
