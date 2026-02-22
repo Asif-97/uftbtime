@@ -2,69 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Exam Schedule | UFTB</title>
+    <title>Exam Schedule | UFTB Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
-        :root { --primary: #003366; --primary-dark: #002244; --accent: #f39c12; --light: #f4f7f6; --white: #ffffff; --success: #2ecc71; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; color: #2c3e50; }
+        :root { --primary: #003366; --accent: #f39c12; --light: #f4f7f6; --white: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; margin: 0; }
 
-        /* ANIMATIONS */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-up { animation: fadeIn 0.5s ease-out forwards; }
-
-        /* SIDEBAR (SAME AS DASHBOARD) */
-        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px; display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 100; }
-        .sidebar-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; }
-        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
+        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, #002244 100%); color: white; padding: 25px; display: flex; flex-direction: column; }
+        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px; color: rgba(255,255,255,0.8); text-decoration: none; margin-bottom: 8px; border-radius: 8px; transition: 0.3s; }
+        .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; }
         .mt-auto { margin-top: auto; }
 
-        /* MAIN CONTENT */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
 
-        /* HEADER */
-        header { background: var(--white); height: 85px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
-        .page-title h2 { font-size: 1.5rem; color: var(--primary); font-weight: 700; }
-        .page-title p { font-size: 0.85rem; color: #7f8c8d; }
-
-        .header-actions { display: flex; gap: 15px; }
-        .search-box { position: relative; }
-        .search-box input { padding: 10px 40px 10px 20px; border-radius: 50px; border: 1px solid #ddd; width: 250px; outline: none; transition: 0.3s; background: #f9f9f9; }
-        .search-box input:focus { width: 300px; border-color: var(--primary); background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #999; }
-
-        .btn-print { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: 0.3s; }
-        .btn-print:hover { background: var(--accent); transform: translateY(-2px); }
-
-        /* TABLE STYLE */
-        .content-body { padding: 30px 40px; }
-        .schedule-card { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        header { background: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .search-box input { padding: 10px 20px; border-radius: 50px; border: 1px solid #ddd; width: 300px; outline: none; }
         
+        .schedule-card { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-top: 30px; overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        thead { background: #f8f9fa; border-bottom: 2px solid #eee; }
-        th { text-align: left; padding: 18px 25px; color: #555; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; }
-        td { padding: 15px 25px; border-bottom: 1px solid #f0f0f0; color: #333; font-size: 0.95rem; }
-        tr:hover { background: #fcfcfc; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; color: #555; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
         
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
         .badge-time { background: #e3f2fd; color: #1976d2; }
         .badge-room { background: #f3e5f5; color: #7b1fa2; }
-        .badge-status { background: #e8f5e9; color: #2e7d32; }
 
-        /* EMPTY STATE */
-        .empty-state { text-align: center; padding: 80px 20px; color: #999; }
-        .empty-state i { font-size: 4rem; margin-bottom: 15px; color: #eee; }
+        .loading { text-align: center; padding: 50px; color: #999; }
     </style>
 </head>
 <body>
 
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h3>UFTB HUB</h3>
-            <p style="font-size: 0.8rem; opacity: 0.7;">Exam Control System</p>
+            <h3>UFTB </h3>
+            <p style="font-size: 0.8rem;">Exam Control System</p>
         </div>
         <nav>
             <a href="index.html" class="menu-item"><i class="fas fa-clock"></i> Dashboard</a>
@@ -76,64 +52,80 @@
 
     <div class="main-content">
         <header>
-            <div class="page-title">
+            <div>
                 <h2>Exam Schedule</h2>
-                <p>Manage and view examination timelines</p>
+                <p style="color: #777;">Upcoming examination routine</p>
             </div>
-            <div class="header-actions">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search course..." onkeyup="filterTable()">
-                    <i class="fas fa-search"></i>
-                </div>
-                <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search course..." onkeyup="filterTable()">
             </div>
         </header>
 
-        <div class="content-body animate-up">
-            <div class="schedule-card">
-                <div id="emptyMsg" class="empty-state" style="display: none;">
-                    <i class="fas fa-folder-open"></i>
-                    <h3>No Schedule Uploaded</h3>
-                    <p>Please go to Admin Panel to upload the routine.</p>
-                </div>
-
-                <table id="examTable">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Course Code</th>
-                            <th>Room No</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        </tbody>
-                </table>
-            </div>
+        <div class="schedule-card">
+            <div id="loading" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading Data...</div>
+            <div id="noData" class="loading" style="display: none;">No Schedule Found</div>
+            
+            <table id="examTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Course Code</th>
+                        <th>Room No</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
+        // === FIREBASE CONFIG (Admin Panel এর মতোই হুবহু হতে হবে) ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI8WXJNIG4_R44idWxuA3np3PwePNxqX0",
+            authDomain: "uftbtime.firebaseapp.com",
+            databaseURL: "https://uftbtime-default-rtdb.firebaseio.com",
+            projectId: "uftbtime",
+            storageBucket: "uftbtime.firebasestorage.app",
+            messagingSenderId: "260572635171",
+            appId: "1:260572635171:web:efaaadc69069d80297d196",
+            measurementId: "G-989NJ37C0F"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Load Data from Firebase
         window.onload = function() {
-            const data = JSON.parse(localStorage.getItem('scheduleData'));
-            const tbody = document.getElementById('tableBody');
-            
-            if(data && data.length > 0) {
-                data.forEach(item => {
-                    let tr = `<tr>
-                        <td style="font-weight:600;">${item.date}</td>
-                        <td><span class="badge badge-time"><i class="far fa-clock"></i> ${item.time}</span></td>
-                        <td>${item.course}</td>
-                        <td><span class="badge badge-room">${item.room}</span></td>
-                        <td><span class="badge badge-status">Scheduled</span></td>
-                    </tr>`;
-                    tbody.innerHTML += tr;
-                });
-            } else {
-                document.getElementById('examTable').style.display = 'none';
-                document.getElementById('emptyMsg').style.display = 'block';
-            }
+            database.ref('schedule').once('value').then((snapshot) => {
+                const data = snapshot.val();
+                const tbody = document.getElementById('tableBody');
+                const loading = document.getElementById('loading');
+                const noData = document.getElementById('noData');
+                const table = document.getElementById('examTable');
+
+                loading.style.display = 'none';
+
+                if (data && data.length > 0) {
+                    table.style.display = 'table';
+                    data.forEach(item => {
+                        let tr = `<tr>
+                            <td style="font-weight:600;">${item.date}</td>
+                            <td><span class="badge badge-time">${item.time}</span></td>
+                            <td>${item.course}</td>
+                            <td><span class="badge badge-room">${item.room}</span></td>
+                            <td><span style="color:green">Scheduled</span></td>
+                        </tr>`;
+                        tbody.innerHTML += tr;
+                    });
+                } else {
+                    noData.style.display = 'block';
+                }
+            }).catch(error => {
+                loading.innerText = "Error loading data!";
+                console.error(error);
+            });
         }
 
         function filterTable() {
