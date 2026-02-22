@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Schedule | UFTB Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,28 +12,42 @@
 
     <style>
         :root { --primary: #003366; --accent: #f39c12; --light: #f4f7f6; --white: #ffffff; }
+        * { box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; margin: 0; }
 
-        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, #002244 100%); color: white; padding: 25px; display: flex; flex-direction: column; }
+        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, #002244 100%); color: white; padding: 25px; display: flex; flex-direction: column; flex-shrink: 0; }
         .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px; color: rgba(255,255,255,0.8); text-decoration: none; margin-bottom: 8px; border-radius: 8px; transition: 0.3s; }
         .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; }
-        .mt-auto { margin-top: auto; }
 
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-        header { background: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .search-box input { padding: 10px 20px; border-radius: 50px; border: 1px solid #ddd; width: 300px; outline: none; }
+        header { background: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 15px; }
+        .search-box input { padding: 10px 20px; border-radius: 50px; border: 1px solid #ddd; width: 100%; max-width: 300px; outline: none; }
         
         .schedule-card { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-top: 30px; overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 15px; text-align: left; color: #555; }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; color: #555; white-space: nowrap; }
         td { padding: 15px; border-bottom: 1px solid #eee; }
         
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
         .badge-time { background: #e3f2fd; color: #1976d2; }
         .badge-room { background: #f3e5f5; color: #7b1fa2; }
 
         .loading { text-align: center; padding: 50px; color: #999; }
+
+        /* Responsive Mobile View */
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; height: auto; padding: 15px; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+            .sidebar-header { margin-bottom: 10px; width: 100%; text-align: center; }
+            nav { display: flex; flex-wrap: wrap; gap: 5px; width: 100%; justify-content: center; }
+            .menu-item { margin-bottom: 0; font-size: 0.85rem; padding: 8px 12px; }
+            .main-content { padding: 20px; }
+            header { flex-direction: column; text-align: center; padding: 20px; }
+            .search-box { width: 100%; }
+            .search-box input { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -65,23 +80,24 @@
             <div id="loading" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading Data...</div>
             <div id="noData" class="loading" style="display: none;">No Schedule Found</div>
             
-            <table id="examTable" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Course Code</th>
-                        <th>Room No</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="examTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Course Code</th>
+                            <th>Room No</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // === FIREBASE CONFIG (Admin Panel এর মতোই হুবহু হতে হবে) ===
         const firebaseConfig = {
             apiKey: "AIzaSyAI8WXJNIG4_R44idWxuA3np3PwePNxqX0",
             authDomain: "uftbtime.firebaseapp.com",
@@ -96,7 +112,6 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Load Data from Firebase
         window.onload = function() {
             database.ref('schedule').once('value').then((snapshot) => {
                 const data = snapshot.val();
@@ -111,11 +126,11 @@
                     table.style.display = 'table';
                     data.forEach(item => {
                         let tr = `<tr>
-                            <td style="font-weight:600;">${item.date}</td>
+                            <td style="font-weight:600; white-space:nowrap;">${item.date}</td>
                             <td><span class="badge badge-time">${item.time}</span></td>
                             <td>${item.course}</td>
                             <td><span class="badge badge-room">${item.room}</span></td>
-                            <td><span style="color:green">Scheduled</span></td>
+                            <td><span style="color:green; font-weight:600;">Scheduled</span></td>
                         </tr>`;
                         tbody.innerHTML += tr;
                     });
@@ -124,7 +139,6 @@
                 }
             }).catch(error => {
                 loading.innerText = "Error loading data!";
-                console.error(error);
             });
         }
 
