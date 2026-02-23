@@ -19,7 +19,8 @@
 
         .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px; display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 100; }
         .sidebar-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; }
+        .menu-item { display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; margin-right: 5px; }
+        .menu-item i { margin-right: 15px; }
         .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
         .mt-auto { margin-top: auto; }
 
@@ -34,26 +35,31 @@
         .notice-bar { background: #fff8e1; color: #d35400; border-bottom: 1px solid #ffe0b2; display: flex; align-items: center; padding: 0 20px; height: 40px; font-size: 0.9rem; font-weight: 600; display: none; }
         .notice-label { background: var(--danger); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 15px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; flex-shrink: 0; }
         marquee { width: 100%; display: flex; align-items: center; margin-top: 3px; }
-        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
+        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; }
+        .notice-item i { margin-right: 8px; }
 
         .central-notice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 200; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .big-notice-card { background: white; width: 60%; max-width: 800px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--danger); animation: fadeIn 0.5s ease-out; }
-        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
+        .big-notice-card h2 i { margin-right: 15px; }
         .big-rules-list { text-align: left; margin: 0 auto; max-width: 600px; list-style: none; }
-        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; gap: 15px; }
-        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; }
-        .minimize-btn { margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px; }
+        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; }
+        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; margin-right: 15px; }
+        .minimize-btn { margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; }
+        .minimize-btn i { margin-left: 10px; }
         .minimize-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
         .dashboard-body { padding: 30px 40px; display: flex; flex-direction: column; flex: 1; justify-content: center; opacity: 0.3; transition: 0.5s; }
         .exam-card { background: white; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; margin-bottom: auto; margin-top: auto; }
        
         .timer-wrapper { margin: 20px 0; }
-        .timer-display { font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
+        /* SMARTBOARD FIX: Solid fallback font size added */
+        .timer-display { font-size: 90px; font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
         .status-text { font-size: 1.3rem; color: var(--accent); font-weight: 600; min-height: 30px; }
        
         .tools-grid { display: flex; justify-content: center; margin-bottom: 30px; }
-        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .tool-box > * { margin: 0 5px; }
         .tool-label { font-weight: 600; color: #555; font-size: 0.9rem; }
        
         .custom-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary); }
@@ -61,8 +67,10 @@
         .btn-arm { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s; }
         .btn-arm:hover { background: #d35400; }
 
-        .control-panel { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .main-btn { padding: 15px 40px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; }
+        .control-panel { margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap; }
+        /* SMARTBOARD FIX: Added margins instead of gap for older browsers */
+        .main-btn { padding: 15px 40px; margin: 10px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
+        .main-btn i { margin-right: 10px; }
         .btn-mid { background: #3498db; } .btn-final { background: #9b59b6; } .btn-quiz { background: var(--success); } .btn-reset { background: var(--danger); }
         .waiting-mode { animation: pulse-red 2s infinite; border: 2px solid var(--accent); }
 
@@ -79,10 +87,10 @@
         body.fullscreen-mode .main-content { padding: 0; background: white; }
         body.fullscreen-mode .exam-card { box-shadow: none; border-radius: 0; height: 100vh; width: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         body.fullscreen-mode .timer-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; }
-        body.fullscreen-mode .timer-display { font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
+        body.fullscreen-mode .timer-display { font-size: 150px; font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
         body.fullscreen-mode header { padding: 0 50px; height: 100px; border-bottom: 2px solid #f0f0f0; }
 
-        @media (max-width: 768px) { .brand-area h2 { font-size: 1rem; } .timer-display { font-size: 4rem; } }
+        @media (max-width: 768px) { .brand-area h2 { font-size: 1rem; } .timer-display { font-size: 60px; } }
     </style>
 </head>
 <body>
@@ -107,7 +115,7 @@
                 <img src="logo.png" alt="UFTB Logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3003/3003058.png';">
                 <h2>University of Frontier Technology, Bangladesh</h2>
             </div>
-            <div class="live-clock" id="liveClock">Connecting Internet...</div>
+            <div class="live-clock" id="liveClock">Connecting...</div>
         </header>
 
         <div class="notice-bar" id="topNoticeBar">
@@ -179,64 +187,58 @@
     </div>
 
     <script>
-        // 0. DEVICE-INDEPENDENT TIME SYNC LOGIC (ULTRA ROBUST)
-        let baseInternetTime = null; 
-        let basePerfTime = null;     
-        let detectedTimezone = 'Asia/Dhaka'; 
+        // SMARTBOARD FIX: Ultra-safe Time Fetching and Math (No Intl dependencies)
+        var baseInternetTime = null; 
+        var basePerfTime = null;     
+        
+        // Helper to get safe performance timing
+        function getSafePerfTime() {
+            return (window.performance && window.performance.now) ? window.performance.now() : Date.now();
+        }
 
         async function fetchNetworkTime() {
             try {
                 document.getElementById('liveClock').innerText = "Syncing...";
-                
-                // 1st Try: TimeAPI (Best for Localhost & Strict CORS)
-                let response = await fetch('https://timeapi.io/api/Time/current/zone?timeZone=Asia/Dhaka');
-                if (!response.ok) throw new Error("TimeAPI failed");
+                // Fetch direct UTC unix timestamp
+                let response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Dhaka');
                 let data = await response.json();
                 
-                baseInternetTime = new Date(data.dateTime + "+06:00").getTime(); 
-                basePerfTime = performance.now();
-                console.log("Internet Time Linked (TimeAPI).");
-
+                baseInternetTime = data.unixtime * 1000; 
+                basePerfTime = getSafePerfTime();
+                console.log("Internet Time Linked (UTC).");
             } catch (error) {
-                console.warn("TimeAPI failed, trying WorldTimeAPI...", error);
-                try {
-                    // 2nd Try: WorldTimeAPI (Fallback)
-                    let response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Dhaka');
-                    let data = await response.json();
-                    
-                    baseInternetTime = new Date(data.datetime).getTime();
-                    basePerfTime = performance.now();
-                    console.log("Internet Time Linked (WorldTimeAPI).");
-                } catch (err2) {
-                    console.error("All APIs blocked! Using Offline Device Time.");
-                    document.getElementById('liveClock').innerText = "Offline Mode";
-                }
+                console.warn("Time API failed. Using offline device time.");
             }
         }
 
-        // MAGIC FUNCTION: Totally ignores device clock changes after load!
         function getRealTime() {
-            if (baseInternetTime === null || basePerfTime === null) {
-                return Date.now(); // Loading er shomoy temporary device time
-            }
-            // Exact Internet Time + Page open thakar exact milliseconds
-            return baseInternetTime + (performance.now() - basePerfTime);
+            if (!baseInternetTime || !basePerfTime) return Date.now();
+            return baseInternetTime + (getSafePerfTime() - basePerfTime);
+        }
+
+        // SMARTBOARD FIX: Calculates exact Bangladesh Time (+6 Hrs from UTC) manually!
+        function getDhakaDate() {
+            var ms = getRealTime();
+            var d = new Date(ms);
+            // Convert any local time back to strict UTC, then force add 6 hours for Dhaka
+            var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+            return new Date(utc + (3600000 * 6)); 
         }
 
         // 1. INITIAL LOAD & PERSISTENCE CHECK
         window.onload = async function() {
             await fetchNetworkTime(); 
 
-            const savedEndTime = localStorage.getItem('activeExamEnd');
-            const savedTitle = localStorage.getItem('activeExamTitle');
-            const savedDuration = localStorage.getItem('activeExamDuration');
+            var savedEndTime = localStorage.getItem('activeExamEnd');
+            var savedTitle = localStorage.getItem('activeExamTitle');
+            var savedDuration = localStorage.getItem('activeExamDuration');
 
             if (savedEndTime && savedDuration) {
                 document.getElementById('centralNotice').style.display = 'none';
                 document.getElementById('topNoticeBar').style.display = 'flex';
                 document.getElementById('mainDashboard').style.opacity = '1';
 
-                const now = getRealTime();
+                var now = getRealTime();
                 if (parseInt(savedEndTime) > now) {
                     launchTimer(parseInt(savedEndTime), savedTitle, parseInt(savedDuration));
                 } else {
@@ -248,7 +250,7 @@
                 }
             }
 
-            const savedSchedTime = localStorage.getItem('schedTime');
+            var savedSchedTime = localStorage.getItem('schedTime');
             if (savedSchedTime) {
                 document.getElementById('scheduleInput').value = savedSchedTime;
                 setSchedule(true);
@@ -257,83 +259,83 @@
 
         // 2. MINIMIZE LOGIC
         function minimizeNotice() {
-            const overlay = document.getElementById('centralNotice');
-            const dashboard = document.getElementById('mainDashboard');
-            const topBar = document.getElementById('topNoticeBar');
+            var overlay = document.getElementById('centralNotice');
+            var dashboard = document.getElementById('mainDashboard');
+            var topBar = document.getElementById('topNoticeBar');
             overlay.style.animation = "fadeOutUp 0.5s ease forwards";
-            setTimeout(() => {
+            setTimeout(function() {
                 overlay.style.display = 'none';
                 topBar.style.display = 'flex';
                 dashboard.style.opacity = '1';
             }, 500);
         }
 
-        // 3. CLOCK
+        // 3. CLOCK (1995-proof manual formatter)
         function updateClock() {
-            const realTimeMs = getRealTime();
-            const now = new Date(realTimeMs);
+            var dhakaDate = getDhakaDate();
             
-            let timeString;
-            try {
-                timeString = now.toLocaleTimeString('en-US', { timeZone: detectedTimezone, hour12: true });
-            } catch (e) {
-                timeString = now.toLocaleTimeString('en-US', { hour12: true });
-            }
+            var h = dhakaDate.getHours();
+            var m = dhakaDate.getMinutes();
+            var s = dhakaDate.getSeconds();
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            
+            var h12 = h % 12;
+            h12 = h12 ? h12 : 12; // the hour '0' should be '12'
+            
+            var timeString = pad(h12) + ':' + pad(m) + ':' + pad(s) + ' ' + ampm;
             
             document.getElementById('liveClock').innerText = timeString;
-            checkSchedule(realTimeMs);
+            checkSchedule(dhakaDate);
         }
         setInterval(updateClock, 1000);
 
         // ======================= MALE VOICE LOGIC =======================
-        let voices = [];
+        var voices = [];
         function loadVoices() { voices = window.speechSynthesis.getVoices(); }
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = loadVoices;
+        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
         }
 
-        function speak(text, repeatCount = 1) {
-            let count = 0;
+        function speak(text, repeatCount) {
+            if(!repeatCount) repeatCount = 1;
+            if(!window.speechSynthesis) return; // Fallback if old browser has no speech api
+            
+            var count = 0;
             function playVoice() {
                 if (count >= repeatCount) return;
-                const utterance = new SpeechSynthesisUtterance(text);
+                var utterance = new SpeechSynthesisUtterance(text);
                 
-                let maleVoice = voices.find(v => 
-                    v.name.toLowerCase().includes('male') || 
-                    v.name.toLowerCase().includes('guy') || 
-                    v.name.includes('David') || 
-                    v.name.includes('Mark') ||  
-                    v.name.includes('Daniel')   
-                );
-                
-                if (maleVoice) {
-                    utterance.voice = maleVoice;
-                } else {
-                    utterance.pitch = 0.5; 
+                var maleVoice = null;
+                for(var i=0; i<voices.length; i++){
+                    var vName = voices[i].name.toLowerCase();
+                    if(vName.indexOf('male') > -1 || vName.indexOf('guy') > -1 || vName.indexOf('david') > -1 || vName.indexOf('mark') > -1 || vName.indexOf('daniel') > -1){
+                        maleVoice = voices[i];
+                        break;
+                    }
                 }
                 
-                utterance.rate = 0.9;
-                utterance.onend = () => {
-                    count++;
-                    if (count < repeatCount) {
-                        setTimeout(playVoice, 500); 
-                    }
-                };
+                if (maleVoice) { utterance.voice = maleVoice; } 
+                else { utterance.pitch = 0.5; }
                 
+                utterance.rate = 0.9;
+                utterance.onend = function() {
+                    count++;
+                    if (count < repeatCount) { setTimeout(playVoice, 500); }
+                };
                 window.speechSynthesis.speak(utterance);
             }
             playVoice();
         }
 
         // 4. SCHEDULER
-        let timerInterval;
-        let scheduledTime = null;
-        let scheduledDuration = 0;
-        let scheduledTitle = "";
+        var timerInterval;
+        var scheduledTime = null;
+        var scheduledDuration = 0;
+        var scheduledTitle = "";
 
-        function setSchedule(isRestore = false) {
-            const timeInput = document.getElementById('scheduleInput').value;
-            const typeInput = document.getElementById('scheduleType').value;
+        function setSchedule(isRestore) {
+            var timeInput = document.getElementById('scheduleInput').value;
+            var typeInput = document.getElementById('scheduleType').value;
 
             if(!timeInput && !isRestore) return alert("Please select a time first!");
 
@@ -344,7 +346,7 @@
             else if(typeInput === 'final') { scheduledDuration = 10800; scheduledTitle = "Final Exam"; }
             else if(typeInput === 'ct') {
                 if(!isRestore) {
-                    let mins = prompt("Enter CT Duration (min):", "15");
+                    var mins = prompt("Enter CT Duration (min):", "15");
                     if (!mins || isNaN(mins)) return;
                     scheduledDuration = mins * 60;
                 } else {
@@ -354,31 +356,21 @@
             }
 
             scheduledTime = timeInput;
-            document.getElementById('statusMsg').innerText = `Waiting for ${scheduledTitle} at ${convertTo12Hour(timeInput)}...`;
+            document.getElementById('statusMsg').innerText = "Waiting for " + scheduledTitle + " at " + convertTo12Hour(timeInput) + "...";
             document.getElementById('statusMsg').style.color = "#f39c12";
             document.querySelector('.exam-card').classList.add('waiting-mode');
             document.getElementById('scheduleInput').disabled = true;
             document.getElementById('scheduleType').disabled = true;
         }
 
-        function checkSchedule(realTimeMs) {
+        function checkSchedule(dhakaDate) {
             if(!scheduledTime) return;
-            let currentH, currentM, currentS;
-            try {
-                let timeStr = new Intl.DateTimeFormat('en-GB', { 
-                    timeZone: detectedTimezone, 
-                    hour: '2-digit', minute: '2-digit', second: '2-digit' 
-                }).format(new Date(realTimeMs));
-                let [h, m, s] = timeStr.split(':');
-                currentH = h; currentM = m; currentS = parseInt(s);
-            } catch (e) {
-                const d = new Date(realTimeMs);
-                currentH = String(d.getHours()).padStart(2, '0');
-                currentM = String(d.getMinutes()).padStart(2, '0');
-                currentS = d.getSeconds();
-            }
+            
+            var currentH = pad(dhakaDate.getHours());
+            var currentM = pad(dhakaDate.getMinutes());
+            var currentS = dhakaDate.getSeconds();
 
-            if (`${currentH}:${currentM}` === scheduledTime && currentS === 0) {
+            if (currentH + ":" + currentM === scheduledTime && currentS === 0) {
                 scheduledTime = null;
                 localStorage.removeItem('schedTime'); 
                 document.querySelector('.exam-card').classList.remove('waiting-mode');
@@ -388,12 +380,12 @@
 
         // 5. EXAM LOGIC WITH SOUND TRIGGERS
         function startQuizFlow() {
-            let minutes = prompt("Enter Quiz Duration (in minutes):", "15");
+            var minutes = prompt("Enter Quiz Duration (in minutes):", "15");
             if (minutes && !isNaN(minutes) && minutes > 0) startExam(minutes * 60, "Class Test");
         }
 
         function startExam(durationSeconds, title) {
-            const endTime = getRealTime() + (durationSeconds * 1000);
+            var endTime = getRealTime() + (durationSeconds * 1000);
             localStorage.setItem('activeExamEnd', endTime);
             localStorage.setItem('activeExamTitle', title);
             localStorage.setItem('activeExamDuration', durationSeconds);
@@ -402,24 +394,24 @@
 
         function launchTimer(endTime, title, totalDurationSeconds) {
             clearInterval(timerInterval);
-            document.getElementById('statusMsg').innerText = `${title} in Progress`;
+            document.getElementById('statusMsg').innerText = title + " in Progress";
             document.getElementById('statusMsg').style.color = "#2ecc71";
            
-            const initialDiff = Math.round((endTime - getRealTime()) / 1000);
+            var initialDiff = Math.round((endTime - getRealTime()) / 1000);
             
-            let startAnnounced = (initialDiff < totalDurationSeconds - 2); 
-            let halfTimeAnnounced = (initialDiff <= totalDurationSeconds / 2);
-            let last5MinAnnounced = (initialDiff <= 300);
-            let finishAnnounced = false;
+            var startAnnounced = (initialDiff < totalDurationSeconds - 2); 
+            var halfTimeAnnounced = (initialDiff <= totalDurationSeconds / 2);
+            var last5MinAnnounced = (initialDiff <= 300);
+            var finishAnnounced = false;
 
             if (!startAnnounced) {
-                speak(`Attention please. The ${title} has started.`, 1);
+                speak("Attention please. The " + title + " has started.", 1);
                 startAnnounced = true;
             }
 
-            timerInterval = setInterval(() => {
-                const now = getRealTime();
-                const diff = Math.round((endTime - now) / 1000);
+            timerInterval = setInterval(function() {
+                var now = getRealTime();
+                var diff = Math.round((endTime - now) / 1000);
 
                 if (diff <= (totalDurationSeconds / 2) && !halfTimeAnnounced && diff > 0) {
                     speak("Attention please. Half time is over.", 1);
@@ -447,10 +439,10 @@
                     return;
                 }
 
-                const h = Math.floor(diff / 3600);
-                const m = Math.floor((diff % 3600) / 60);
-                const s = diff % 60;
-                document.getElementById('display').innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
+                var h = Math.floor(diff / 3600);
+                var m = Math.floor((diff % 3600) / 60);
+                var s = diff % 60;
+                document.getElementById('display').innerText = pad(h) + ":" + pad(m) + ":" + pad(s);
             }, 1000);
         }
 
@@ -462,8 +454,8 @@
         }
 
         function toggleFullScreen() {
-            let elem = document.documentElement;
-            let isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+            var elem = document.documentElement;
+            var isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
 
             if (!isFullscreen) {
                 if (elem.requestFullscreen) { elem.requestFullscreen(); } 
@@ -481,7 +473,15 @@
         }
 
         function pad(n) { return n < 10 ? '0' + n : n; }
-        function convertTo12Hour(t) { const [h, m] = t.split(':'); return `${h%12||12}:${m} ${h>=12?'PM':'AM'}`; }
+        function convertTo12Hour(t) { 
+            var parts = t.split(':'); 
+            var h = parseInt(parts[0]);
+            var m = parts[1];
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12;
+            return h + ":" + m + " " + ampm; 
+        }
     </script>
 </body>
 </html>
