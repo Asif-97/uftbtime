@@ -12,85 +12,133 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; color: #2c3e50; }
 
+        /* ANIMATIONS */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-50px); } }
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
         .animate-up { animation: fadeIn 0.6s ease-out forwards; }
 
+        /* SIDEBAR */
         .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px; display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 100; }
         .sidebar-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .menu-item { display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; margin-right: 5px; }
-        .menu-item i { margin-right: 15px; }
+        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; }
         .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
         .mt-auto { margin-top: auto; }
 
+        /* MAIN CONTENT */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
        
+        /* HEADER */
         header { background: var(--white); height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 50; }
         .brand-area { display: flex; align-items: center; }
         .brand-area img { height: 55px; margin-right: 15px; }
         .brand-area h2 { font-size: 1.4rem; color: var(--primary); font-weight: 700; letter-spacing: 0.5px; }
         .live-clock { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.2rem; color: var(--primary); background: #eef2f7; padding: 8px 15px; border-radius: 8px; border: 1px solid #dce4ec; }
 
+        /* SCROLLING NOTICE */
         .notice-bar { background: #fff8e1; color: #d35400; border-bottom: 1px solid #ffe0b2; display: flex; align-items: center; padding: 0 20px; height: 40px; font-size: 0.9rem; font-weight: 600; display: none; }
         .notice-label { background: var(--danger); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 15px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; flex-shrink: 0; }
         marquee { width: 100%; display: flex; align-items: center; margin-top: 3px; }
-        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; }
-        .notice-item i { margin-right: 8px; }
+        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
 
-        .central-notice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 200; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .big-notice-card { background: white; width: 60%; max-width: 800px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--danger); animation: fadeIn 0.5s ease-out; }
-        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
-        .big-notice-card h2 i { margin-right: 15px; }
+        /* CENTRAL NOTICE */
+        .central-notice-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 200;
+            display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .big-notice-card {
+            background: white; width: 60%; max-width: 800px;
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            text-align: center; border-top: 8px solid var(--danger);
+            animation: fadeIn 0.5s ease-out;
+        }
+        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; }
         .big-rules-list { text-align: left; margin: 0 auto; max-width: 600px; list-style: none; }
-        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; }
-        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; margin-right: 15px; }
-        .minimize-btn { margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; }
-        .minimize-btn i { margin-left: 10px; }
+        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; gap: 15px; }
+        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; }
+        .minimize-btn {
+            margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white;
+            border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 10px;
+        }
         .minimize-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
+        /* DASHBOARD BODY */
         .dashboard-body { padding: 30px 40px; display: flex; flex-direction: column; flex: 1; justify-content: center; opacity: 0.3; transition: 0.5s; }
+       
+        /* EXAM CARD */
         .exam-card { background: white; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; margin-bottom: auto; margin-top: auto; }
        
+        /* TIMER */
         .timer-wrapper { margin: 20px 0; }
-        /* SMARTBOARD FIX: Solid fallback font size added */
-        .timer-display { font-size: 90px; font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
+        .timer-display { font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
         .status-text { font-size: 1.3rem; color: var(--accent); font-weight: 600; min-height: 30px; }
        
+        /* CONTROLS */
         .tools-grid { display: flex; justify-content: center; margin-bottom: 30px; }
-        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; flex-wrap: wrap; justify-content: center; }
-        .tool-box > * { margin: 0 5px; }
+        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
         .tool-label { font-weight: 600; color: #555; font-size: 0.9rem; }
        
         .custom-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary); }
         .type-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: 'Poppins', sans-serif; font-weight: 600; color: #555; cursor: pointer; }
+       
         .btn-arm { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s; }
         .btn-arm:hover { background: #d35400; }
 
-        .control-panel { margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap; }
-        /* SMARTBOARD FIX: Added margins instead of gap for older browsers */
-        .main-btn { padding: 15px 40px; margin: 10px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
-        .main-btn i { margin-right: 10px; }
+        .control-panel { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .main-btn { padding: 15px 40px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; }
         .btn-mid { background: #3498db; } .btn-final { background: #9b59b6; } .btn-quiz { background: var(--success); } .btn-reset { background: var(--danger); }
         .waiting-mode { animation: pulse-red 2s infinite; border: 2px solid var(--accent); }
 
-        .dashboard-footer { margin-top: 30px; display: flex; justify-content: flex-end; padding-bottom: 10px; color: var(--primary); }
+        /* FOOTER */
+        .dashboard-footer { margin-top: 30px; display: flex; justify-content: flex-end; padding-bottom: 10px; color: var(--primary); transition: 0.5s; }
         .signature-box { text-align: center; width: 250px; }
         .signature-title { font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
         .signature-line { height: 3px; width: 100%; background: var(--primary); margin: 5px auto; border-radius: 50px; opacity: 0.3; }
         .designation { font-size: 0.8rem; opacity: 0.8; font-style: italic; }
 
+        /* FULLSCREEN LOGIC */
         .fullscreen-btn { position: absolute; top: 30px; right: 30px; font-size: 1.5rem; color: #ccc; cursor: pointer; border: none; background: none; transition: 0.3s; }
         .fullscreen-btn:hover { color: var(--primary); transform: scale(1.1); }
 
-        body.fullscreen-mode .sidebar, body.fullscreen-mode .notice-bar, body.fullscreen-mode .tools-grid, body.fullscreen-mode .control-panel, body.fullscreen-mode .status-text, body.fullscreen-mode .dashboard-footer { display: none !important; }
-        body.fullscreen-mode .main-content { padding: 0; background: white; }
-        body.fullscreen-mode .exam-card { box-shadow: none; border-radius: 0; height: 100vh; width: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        body.fullscreen-mode .timer-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; }
-        body.fullscreen-mode .timer-display { font-size: 150px; font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
-        body.fullscreen-mode header { padding: 0 50px; height: 100px; border-bottom: 2px solid #f0f0f0; }
+        /* Removed .dashboard-footer from this display: none list */
+        body.fullscreen-mode .sidebar,
+        body.fullscreen-mode .notice-bar,
+        body.fullscreen-mode .tools-grid,
+        body.fullscreen-mode .control-panel,
+        body.fullscreen-mode .status-text
+        { display: none !important; }
+       
+        /* Fix footer to bottom right during fullscreen */
+        body.fullscreen-mode .dashboard-footer {
+            position: fixed;
+            bottom: 25px;
+            right: 35px;
+            display: block !important;
+            z-index: 1000;
+            margin: 0;
+            padding: 0;
+            opacity: 0.8;
+        }
+        body.fullscreen-mode .signature-box { text-align: right; width: auto; }
+        body.fullscreen-mode .signature-line { margin: 5px 0 5px auto; } /* Align line to right */
 
-        @media (max-width: 768px) { .brand-area h2 { font-size: 1rem; } .timer-display { font-size: 60px; } }
+        body.fullscreen-mode .main-content { padding: 0; background: white; }
+       
+        /* Centering Fix */
+        body.fullscreen-mode .exam-card {
+            box-shadow: none; border-radius: 0;
+            height: 100vh; width: 100%; margin: 0; padding: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+       
+        body.fullscreen-mode .timer-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; }
+        body.fullscreen-mode .timer-display { font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
+        body.fullscreen-mode header { padding: 0 50px; height: 100px; border-bottom: 2px solid #f0f0f0; }
     </style>
 </head>
 <body>
@@ -115,7 +163,7 @@
                 <img src="logo.png" alt="UFTB Logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3003/3003058.png';">
                 <h2>University of Frontier Technology, Bangladesh</h2>
             </div>
-            <div class="live-clock" id="liveClock">Connecting...</div>
+            <div class="live-clock" id="liveClock">Loading...</div>
         </header>
 
         <div class="notice-bar" id="topNoticeBar">
