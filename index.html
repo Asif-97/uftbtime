@@ -12,136 +12,148 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: var(--light); display: flex; height: 100vh; overflow: hidden; color: #2c3e50; }
 
-        /* ANIMATIONS */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-50px); } }
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
         .animate-up { animation: fadeIn 0.6s ease-out forwards; }
 
-        /* SIDEBAR */
         .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 25px; display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 100; }
         .sidebar-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .menu-item { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; }
+        .menu-item { display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 10px; margin-bottom: 8px; transition: 0.3s; font-size: 0.95rem; margin-right: 5px; }
+        .menu-item i { margin-right: 15px; }
         .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); color: white; transform: translateX(5px); }
         .mt-auto { margin-top: auto; }
 
-        /* MAIN CONTENT */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
        
-        /* HEADER */
         header { background: var(--white); height: 90px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 50; }
         .brand-area { display: flex; align-items: center; }
         .brand-area img { height: 55px; margin-right: 15px; }
         .brand-area h2 { font-size: 1.4rem; color: var(--primary); font-weight: 700; letter-spacing: 0.5px; }
-        .live-clock { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.2rem; color: var(--primary); background: #eef2f7; padding: 8px 15px; border-radius: 8px; border: 1px solid #dce4ec; }
+        
+        /* CLICKABLE CLOCK CSS */
+        .live-clock { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.2rem; color: var(--primary); background: #eef2f7; padding: 8px 15px; border-radius: 8px; border: 1px solid #dce4ec; cursor: pointer; transition: 0.3s; }
+        .live-clock:hover { background: var(--primary); color: white; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
 
-        /* SCROLLING NOTICE */
         .notice-bar { background: #fff8e1; color: #d35400; border-bottom: 1px solid #ffe0b2; display: flex; align-items: center; padding: 0 20px; height: 40px; font-size: 0.9rem; font-weight: 600; display: none; }
         .notice-label { background: var(--danger); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 15px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; flex-shrink: 0; }
         marquee { width: 100%; display: flex; align-items: center; margin-top: 3px; }
-        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; gap: 8px; }
+        .notice-item { margin-right: 50px; display: inline-flex; align-items: center; }
+        .notice-item i { margin-right: 8px; }
 
-        /* CENTRAL NOTICE */
-        .central-notice-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            z-index: 200;
-            display: flex; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .big-notice-card {
-            background: white; width: 60%; max-width: 800px;
-            padding: 40px; border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            text-align: center; border-top: 8px solid var(--danger);
-            animation: fadeIn 0.5s ease-out;
-        }
-        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .central-notice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 200; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .big-notice-card { background: white; width: 60%; max-width: 800px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); text-align: center; border-top: 8px solid var(--danger); animation: fadeIn 0.5s ease-out; }
+        .big-notice-card h2 { color: var(--danger); font-size: 2rem; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
+        .big-notice-card h2 i { margin-right: 15px; }
         .big-rules-list { text-align: left; margin: 0 auto; max-width: 600px; list-style: none; }
-        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; gap: 15px; }
-        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; }
-        .minimize-btn {
-            margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white;
-            border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer;
-            transition: 0.3s; display: inline-flex; align-items: center; gap: 10px;
-        }
+        .big-rules-list li { padding: 15px; border-bottom: 1px solid #eee; font-size: 1.1rem; color: #444; display: flex; align-items: center; }
+        .big-rules-list li i { color: var(--danger); font-size: 1.3rem; margin-right: 15px; }
+        .minimize-btn { margin-top: 30px; padding: 15px 40px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; }
+        .minimize-btn i { margin-left: 10px; }
         .minimize-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-        /* DASHBOARD BODY */
         .dashboard-body { padding: 30px 40px; display: flex; flex-direction: column; flex: 1; justify-content: center; opacity: 0.3; transition: 0.5s; }
-       
-        /* EXAM CARD */
         .exam-card { background: white; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; margin-bottom: auto; margin-top: auto; }
        
-        /* TIMER */
         .timer-wrapper { margin: 20px 0; }
-        .timer-display { font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
+        .timer-display { font-size: 90px; font-size: clamp(4rem, 10vw, 8rem); font-weight: 700; color: var(--primary); font-family: 'Courier New', monospace; line-height: 1; letter-spacing: -3px; }
         .status-text { font-size: 1.3rem; color: var(--accent); font-weight: 600; min-height: 30px; }
        
-        /* CONTROLS */
         .tools-grid { display: flex; justify-content: center; margin-bottom: 30px; }
-        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+        .tool-box { background: #f8f9fa; padding: 10px 20px; border-radius: 50px; border: 1px solid #eee; display: flex; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .tool-box > * { margin: 0 5px; }
         .tool-label { font-weight: 600; color: #555; font-size: 0.9rem; }
        
         .custom-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--primary); }
         .type-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-family: 'Poppins', sans-serif; font-weight: 600; color: #555; cursor: pointer; }
-       
         .btn-arm { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s; }
         .btn-arm:hover { background: #d35400; }
 
-        .control-panel { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .main-btn { padding: 15px 40px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; }
+        .control-panel { margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap; }
+        .main-btn { padding: 15px 40px; margin: 10px; border: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
+        .main-btn i { margin-right: 10px; }
         .btn-mid { background: #3498db; } .btn-final { background: #9b59b6; } .btn-quiz { background: var(--success); } .btn-reset { background: var(--danger); }
         .waiting-mode { animation: pulse-red 2s infinite; border: 2px solid var(--accent); }
 
-        /* FOOTER */
-        .dashboard-footer { margin-top: 30px; display: flex; justify-content: flex-end; padding-bottom: 10px; color: var(--primary); transition: 0.5s; }
-        .signature-box { text-align: center; width: 250px; }
-        .signature-title { font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .signature-line { height: 3px; width: 100%; background: var(--primary); margin: 5px auto; border-radius: 50px; opacity: 0.3; }
-        .designation { font-size: 0.8rem; opacity: 0.8; font-style: italic; }
+        .dashboard-footer { margin-top: 30px; display: flex; justify-content: flex-end; padding-bottom: 10px; transition: 0.5s; }
+        .signature-box { text-align: center; width: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .signature-title { font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--primary); }
+        .signature-line { height: 3px; width: 100%; background: #8fa0b5; margin: 8px 0; border-radius: 5px; }
+        .designation { font-size: 0.9rem; font-style: italic; color: #2c3e50; font-weight: 500; line-height: 1.4; }
 
-        /* FULLSCREEN LOGIC */
         .fullscreen-btn { position: absolute; top: 30px; right: 30px; font-size: 1.5rem; color: #ccc; cursor: pointer; border: none; background: none; transition: 0.3s; }
         .fullscreen-btn:hover { color: var(--primary); transform: scale(1.1); }
 
-        /* Removed .dashboard-footer from this display: none list */
-        body.fullscreen-mode .sidebar,
-        body.fullscreen-mode .notice-bar,
-        body.fullscreen-mode .tools-grid,
-        body.fullscreen-mode .control-panel,
-        body.fullscreen-mode .status-text
-        { display: none !important; }
-       
-        /* Fix footer to bottom right during fullscreen */
-        body.fullscreen-mode .dashboard-footer {
-            position: fixed;
-            bottom: 25px;
-            right: 35px;
-            display: block !important;
-            z-index: 1000;
-            margin: 0;
-            padding: 0;
-            opacity: 0.8;
-        }
-        body.fullscreen-mode .signature-box { text-align: right; width: auto; }
-        body.fullscreen-mode .signature-line { margin: 5px 0 5px auto; } /* Align line to right */
-
+        body.fullscreen-mode .sidebar, body.fullscreen-mode .notice-bar, body.fullscreen-mode .tools-grid, body.fullscreen-mode .control-panel, body.fullscreen-mode .status-text { display: none !important; }
         body.fullscreen-mode .main-content { padding: 0; background: white; }
-       
-        /* Centering Fix */
-        body.fullscreen-mode .exam-card {
-            box-shadow: none; border-radius: 0;
-            height: 100vh; width: 100%; margin: 0; padding: 0;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-       
+        body.fullscreen-mode .exam-card { box-shadow: none; border-radius: 0; height: 100vh; width: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         body.fullscreen-mode .timer-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; }
-        body.fullscreen-mode .timer-display { font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
+        body.fullscreen-mode .timer-display { font-size: 150px; font-size: 17vw; margin: 0; line-height: 1; text-align: center; }
         body.fullscreen-mode header { padding: 0 50px; height: 100px; border-bottom: 2px solid #f0f0f0; }
+
+        body.fullscreen-mode .dashboard-footer { position: fixed; bottom: 25px; right: 35px; display: block !important; z-index: 1000; margin: 0; padding: 0; opacity: 0.8; }
+        body.fullscreen-mode .signature-box { text-align: center; width: 250px; align-items: center; }
+        body.fullscreen-mode .signature-line { margin: 8px 0; }
+
+        /* ================= BIG FULLSCREEN CLOCK (EXACT WHITE DESIGN) ================= */
+        .clock-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 9999;
+            flex-direction: column; justify-content: center; align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .clock-overlay.active { display: flex; }
+        .big-clock-time {
+            font-size: 14vw; font-weight: 700; font-family: 'Courier New', monospace;
+            letter-spacing: -3px; line-height: 1; color: var(--primary); 
+            white-space: nowrap; /* Tader jeno na vange */
+        }
+        .big-clock-date { font-size: 2vw; margin-top: 15px; font-weight: 600; color: #7f8c8d; letter-spacing: 2px; font-family: 'Poppins', sans-serif;}
+        
+        .overlay-header {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100px;
+            padding: 0 50px; border-bottom: 2px solid #f0f0f0;
+            display: flex; align-items: center; justify-content: space-between;
+            background: white;
+        }
+        .overlay-footer { position: absolute; bottom: 25px; right: 35px; opacity: 0.8; }
+        
+        .close-clock-btn { font-size: 1.5rem; color: #ccc; background: none; border: none; cursor: pointer; transition: 0.3s; }
+        .close-clock-btn:hover { color: var(--primary); transform: scale(1.1); }
+
+        @media (max-width: 768px) { 
+            .brand-area h2 { font-size: 1rem; } 
+            .timer-display { font-size: 60px; } 
+            .big-clock-time { font-size: 16vw; } 
+            .big-clock-date { font-size: 4vw; } 
+            .overlay-header { padding: 0 20px; } 
+        }
     </style>
 </head>
 <body>
+
+    <div class="clock-overlay" id="clockOverlay">
+        <div class="overlay-header">
+            <div class="brand-area">
+                <img src="logo.png" alt="UFTB Logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3003/3003058.png';">
+                <h2>University of Frontier Technology, Bangladesh</h2>
+            </div>
+            <button class="close-clock-btn" onclick="closeBigClock()"><i class="fas fa-compress"></i></button>
+        </div>
+
+        <div class="big-clock-time" id="bigClockTime">00:00:00</div>
+        <div class="big-clock-date" id="bigClockDate">Loading...</div>
+
+        <div class="overlay-footer">
+            <div class="signature-box">
+                <div class="signature-title">Developed By</div>
+                <div class="signature-line"></div>
+                <div class="designation">Md Asif Sarkar</div>
+                 <div class="designation">Department of EdTE</div>
+                 <div class="designation">Session: 2021-22</div>
+            </div>
+        </div>
+    </div>
 
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -163,7 +175,7 @@
                 <img src="logo.png" alt="UFTB Logo" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3003/3003058.png';">
                 <h2>University of Frontier Technology, Bangladesh</h2>
             </div>
-            <div class="live-clock" id="liveClock">Loading...</div>
+            <div class="live-clock" id="liveClock" onclick="openBigClock()" title="Click to view full screen clock">Connecting...</div>
         </header>
 
         <div class="notice-bar" id="topNoticeBar">
@@ -235,11 +247,9 @@
     </div>
 
     <script>
-        // SMARTBOARD FIX: Ultra-safe Time Fetching and Math (No Intl dependencies)
         var baseInternetTime = null; 
         var basePerfTime = null;     
         
-        // Helper to get safe performance timing
         function getSafePerfTime() {
             return (window.performance && window.performance.now) ? window.performance.now() : Date.now();
         }
@@ -247,13 +257,11 @@
         async function fetchNetworkTime() {
             try {
                 document.getElementById('liveClock').innerText = "Syncing...";
-                // Fetch direct UTC unix timestamp
                 let response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Dhaka');
                 let data = await response.json();
                 
                 baseInternetTime = data.unixtime * 1000; 
                 basePerfTime = getSafePerfTime();
-                console.log("Internet Time Linked (UTC).");
             } catch (error) {
                 console.warn("Time API failed. Using offline device time.");
             }
@@ -264,16 +272,13 @@
             return baseInternetTime + (getSafePerfTime() - basePerfTime);
         }
 
-        // SMARTBOARD FIX: Calculates exact Bangladesh Time (+6 Hrs from UTC) manually!
         function getDhakaDate() {
             var ms = getRealTime();
             var d = new Date(ms);
-            // Convert any local time back to strict UTC, then force add 6 hours for Dhaka
             var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
             return new Date(utc + (3600000 * 6)); 
         }
 
-        // 1. INITIAL LOAD & PERSISTENCE CHECK
         window.onload = async function() {
             await fetchNetworkTime(); 
 
@@ -305,7 +310,6 @@
             }
         };
 
-        // 2. MINIMIZE LOGIC
         function minimizeNotice() {
             var overlay = document.getElementById('centralNotice');
             var dashboard = document.getElementById('mainDashboard');
@@ -318,7 +322,30 @@
             }, 500);
         }
 
-        // 3. CLOCK (1995-proof manual formatter)
+        // ================= FULLSCREEN BIG CLOCK LOGIC =================
+        function openBigClock() {
+            var overlay = document.getElementById('clockOverlay');
+            overlay.classList.add('active');
+            
+            var elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); } 
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
+            else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); } 
+            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+        }
+
+        function closeBigClock() {
+            var overlay = document.getElementById('clockOverlay');
+            overlay.classList.remove('active');
+            
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                if (document.exitFullscreen) { document.exitFullscreen(); } 
+                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } 
+                else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); } 
+                else if (document.msExitFullscreen) { document.msExitFullscreen(); }
+            }
+        }
+
         function updateClock() {
             var dhakaDate = getDhakaDate();
             
@@ -328,16 +355,22 @@
             var ampm = h >= 12 ? 'PM' : 'AM';
             
             var h12 = h % 12;
-            h12 = h12 ? h12 : 12; // the hour '0' should be '12'
+            h12 = h12 ? h12 : 12; 
             
             var timeString = pad(h12) + ':' + pad(m) + ':' + pad(s) + ' ' + ampm;
             
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var dateString = days[dhakaDate.getDay()] + ", " + months[dhakaDate.getMonth()] + " " + dhakaDate.getDate() + ", " + dhakaDate.getFullYear();
+            
             document.getElementById('liveClock').innerText = timeString;
+            document.getElementById('bigClockTime').innerText = timeString;
+            document.getElementById('bigClockDate').innerText = dateString;
+
             checkSchedule(dhakaDate);
         }
         setInterval(updateClock, 1000);
 
-        // ======================= MALE VOICE LOGIC =======================
         var voices = [];
         function loadVoices() { voices = window.speechSynthesis.getVoices(); }
         if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -346,7 +379,7 @@
 
         function speak(text, repeatCount) {
             if(!repeatCount) repeatCount = 1;
-            if(!window.speechSynthesis) return; // Fallback if old browser has no speech api
+            if(!window.speechSynthesis) return; 
             
             var count = 0;
             function playVoice() {
@@ -375,7 +408,6 @@
             playVoice();
         }
 
-        // 4. SCHEDULER
         var timerInterval;
         var scheduledTime = null;
         var scheduledDuration = 0;
@@ -426,7 +458,6 @@
             }
         }
 
-        // 5. EXAM LOGIC WITH SOUND TRIGGERS
         function startQuizFlow() {
             var minutes = prompt("Enter Quiz Duration (in minutes):", "15");
             if (minutes && !isNaN(minutes) && minutes > 0) startExam(minutes * 60, "Class Test");
